@@ -1,4 +1,33 @@
 
+--- PATH: ~/.config/nvim/lua/core/fttabs.lua ---
+-- File: ~/.config/nvim/lua/core/fttabs.lua
+-- Automatically set tab/indentation per filetype
+local ft_tab_settings = {
+  python = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  javascript = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  typescript = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  lua = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  rust = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  c = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  cpp = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  go = { tabstop = 8, shiftwidth = 8, expandtab = false },  -- Go prefers real tabs
+  make = { tabstop = 8, shiftwidth = 8, expandtab = false }, -- Makefiles require tabs
+  html = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  css = { tabstop = 2, shiftwidth = 2, expandtab = true },
+}
+
+-- Apply settings automatically when a filetype is detected
+for ft, settings in pairs(ft_tab_settings) do
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = ft,
+    callback = function()
+      vim.opt_local.tabstop = settings.tabstop
+      vim.opt_local.shiftwidth = settings.shiftwidth
+      vim.opt_local.expandtab = settings.expandtab
+    end,
+  })
+end
+
 --- PATH: ~/.config/nvim/lua/core/keymaps.lua ---
 local keymap = vim.keymap
 
@@ -147,114 +176,151 @@ return {{
 --- PATH: ~/.config/nvim/lua/plugins/core.lua ---
 -- ~/.config/nvim/lua/plugins/core.lua
 return { -- Syntax Highlighting (Treesitter)
-{
+  {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-        require("nvim-treesitter.configs").setup({
-            ensure_installed = {"c", "lua", "vim", "vimdoc", "query", "python", "javascript", "typescript", "rust"},
-            highlight = {
-                enable = true
-            },
-            indent = {
-                enable = true
-            }
-        })
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript", "typescript", "rust" },
+        highlight = {
+          enable = true
+        },
+        indent = {
+          enable = true
+        }
+      })
     end
-}, {
-    "hrsh7th/cmp-nvim-lsp",
-    dependencies = {"hrsh7th/nvim-cmp"} -- ensures cmp is present
-}, -- LSP Infrastructure: Mason
-{
+  }, {
+  "hrsh7th/cmp-nvim-lsp",
+  dependencies = { "hrsh7th/nvim-cmp" } -- ensures cmp is present
+},                                      -- LSP Infrastructure: Mason
+  {
     "williamboman/mason.nvim",
     opts = {}
-}, -- LSP servers via Mason
-{
+  }, -- LSP servers via Mason
+  {
     "williamboman/mason-lspconfig.nvim",
     version = "1.*",
-    dependencies = {"williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp"},
+    dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
     lazy = false, -- force early load
     opts = {
-        ensure_installed = {"pyright", "ruff", "rust_analyzer", "vtsls", "eslint", "clangd"}
+      ensure_installed = { "pyright", "ruff", "rust_analyzer", "vtsls", "eslint", "clangd", "lua_ls" }
     },
     config = function(_, opts)
-        local mlsp = require("mason-lspconfig")
-        mlsp.setup({
-            ensure_installed = opts.ensure_installed
-        })
-        mlsp.setup_handlers({function(server_name)
-            local lspconfig = require("lspconfig")
-            lspconfig[server_name].setup({
-                capabilities = require("cmp_nvim_lsp").default_capabilities()
-            })
-        end})
+      local mlsp = require("mason-lspconfig")
+      mlsp.setup({
+        ensure_installed = opts.ensure_installed
+      })
+      -- mlsp.setup_handlers({function(server_name)
+      --     local lspconfig = require("lspconfig")
+      --     lspconfig[server_name].setup({
+      --         capabilities = require("cmp_nvim_lsp").default_capabilities()
+      --     })
+      -- end})
+      mlsp.setup_handlers({
+        -- default handler (all servers)
+        function(server_name)
+          require("lspconfig")[server_name].setup({
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+          })
+        end,
+
+        -- SPECIAL CONFIG FOR LUA
+        ["lua_ls"] = function()
+          require("lspconfig").lua_ls.setup({
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            settings = {
+              Lua = {
+                runtime = {
+                  version = "LuaJIT",
+                },
+                diagnostics = {
+                  globals = { "vim" }, -- this remove squiggles from LUA LSP on the global "vim" variable
+                },
+                workspace = {
+                  library = vim.api.nvim_get_runtime_file("", true),
+                },
+                telemetry = {
+                  enable = false,
+                },
+              },
+            },
+          })
+        end,
+      })
     end
-}, -- Auto-install formatters/debuggers
-{
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"},
-    opts = {
-        ensure_installed = {"prettier", "clang-format", "debugpy", "codelldb"},
-        run_on_start = true,
-        start_delay = 3000
-    }
-}, -- Fuzzy Finder
-{
+  }, -- Auto-install formatters/debuggers
+
+  -- the below cannot uncommented yet because mason-tool-installer must catch up with the current mason version
+  -- {
+  --     "WhoIsSethDaniel/mason-tool-installer.nvim",
+  --     dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"},
+  --     opts = {
+  --         ensure_installed = {"prettier", "clang-format", "debugpy", "codelldb"},
+  --         run_on_start = true,
+  --         start_delay = 3000
+  --     }
+  -- },
+  -- Fuzzy Finder
+  {
     "ibhagwan/fzf-lua",
-    dependencies = {"nvim-tree/nvim-web-devicons"},
-    keys = {{
-        "<leader>ff",
-        "<cmd>fzf-lua files<cr>",
-        desc = "Find Files"
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = { {
+      "<leader>ff",
+      "<cmd>FzfLua files<cr>",
+      desc = "Find Files"
     }, {
-        "<leader>fg",
-        "<cmd>fzf-lua live_grep<cr>",
-        desc = "Live Proj Grep"
+      "<leader>fg",
+      "<cmd>FzfLua live_grep<cr>",
+      desc = "Live Proj Grep"
     }, {
-        "<leader><space>",
-        "<cmd>fzf-lua buffers<cr>",
-        desc = "Switch Buffers"
-    }},
+      "<leader><space>",
+      "<cmd>FzfLua buffers<cr>",
+      desc = "Switch Buffers"
+    } },
     opts = {}
-}, -- Bottom terminal
-{
+  }, -- Bottom terminal
+  {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = function()
-        require("toggleterm").setup({
-            size = 15,
-            open_mapping = [[<C-\>]],
-            direction = "horizontal",
-            shade_terminals = true,
-            persist_mode = true
-        })
+      require("toggleterm").setup({
+        size = 15,
+        open_mapping = [[<C-\>]],
+        direction = "horizontal",
+        shade_terminals = true,
+        persist_mode = true
+      })
     end
-}, -- File navigation sidebar
-{
+  }, -- File navigation sidebar
+  {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
-    dependencies = {"nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim"},
-    keys = {{
-        "<leader>e",
-        "<cmd>Neotree toggle<cr>",
-        desc = "Toggle NeoTree"
-    }},
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    keys = { {
+      "<leader>e",
+      "<cmd>Neotree toggle<cr>",
+      desc = "Toggle NeoTree"
+    } },
     opts = {
-        filesystem = {
-            filtered_items = {
-                visible = true,
-                hide_dotfiles = false
-            }
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false
         }
+      }
     }
-}}
+  },
+  {
+    "numToStr/Comment.nvim",
+    opts = {}
+  } }
 
 --- PATH: ~/.config/nvim/lua/plugins/python.lua ---
 return { -- Python LSP and Formatter setup via LSPConfig
 {
     "neovim/nvim-lspconfig",
     config = function()
-        local lspconfig = require("lspconfig")
         -- Pyright for intelligent autocomplete and type checking
         local lspconfig = require("lspconfig")
 
@@ -281,15 +347,6 @@ return { -- Python LSP and Formatter setup via LSPConfig
 }}
 
 --- PATH: ~/.config/nvim/lua/plugins/cpp.lua ---
--- return {{
---     "neovim/nvim-lspconfig",
---     config = function()
---         local lspconfig = require("lspconfig")
---         lspconfig.clangd.setup({
---             -- No need to hardcode cmd; Mason ensures it's installed
---         })
---     end
--- }}
 return {
   {
     "neovim/nvim-lspconfig",
@@ -314,6 +371,83 @@ return {{
         lspconfig.vtsls.setup({})
         lspconfig.eslint.setup({})
     end
+} :w
+}
+
+--- PATH: ~/.config/nvim/lua/plugins/color_themes.lua ---
+-- ~/.config/nvim/lua/plugins/colors.lua
+ -- Tokyonight
+return {
+{
+    "folke/tokyonight.nvim",
+    lazy = false, -- load immediately
+    priority = 1000, -- load early
+    config = function()
+        vim.cmd.colorscheme("tokyonight") -- set as active colorscheme
+    end
+}, -- Gruvbox (Lua port)
+{
+    "ellisonleao/gruvbox.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.o.background = "dark"
+        -- vim.cmd.colorscheme("gruvbox") -- uncomment to activate
+    end
+}, -- Gruvbox mor
+{
+    "morhetz/gruvbox",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.o.background = "dark" -- must set before colorscheme
+        -- vim.cmd.colorscheme("gruvbox")
+    end
+}, -- Catppuccin
+{
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        require("catppuccin").setup({
+            flavour = "mocha" -- latte, frappe, macchiato, mocha
+        })
+        vim.cmd.colorscheme("catppuccin") -- uncomment to activate
+    end
+}, -- Everforest
+{
+    "sainnhe/everforest",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.o.background = "dark"
+        -- vim.cmd.colorscheme("everforest") -- uncomment to activate
+    end
+}, -- VSCode Dark+
+{
+    "Mofiqul/vscode.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        require("vscode").setup({
+            style = "dark", -- "dark" or "light"
+            transparent = false,
+            italic_comments = true,
+            terminal_colors = true
+        })
+        vim.cmd.colorscheme("vscode") -- uncomment to activate
+    end
+},
+-- VSCode Dark Modern / Arctic
+{
+    "rockyzhang24/arctic.nvim",
+    dependencies = {"rktjmp/lush.nvim"},
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.cmd.colorscheme("arctic")
+    end
 }}
 
 --- PATH: ~/.config/nvim/init.lua ---
@@ -324,6 +458,7 @@ vim.g.maplocalleader = " "
 
 -- 2. Load Editor Settings
 require("core.settings")
+require("core.fttabs")
 
 -- 3 . Load custom defined keybingings
 require("core.keymaps")
@@ -331,24 +466,24 @@ require("core.keymaps")
 -- 3. Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({"git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
-                   lazypath})
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
+    lazypath })
 end
 vim.opt.rtp:prepend(lazypath)
 
 -- 4. Load Plugins
 require("lazy").setup({
-    spec = {{
-        import = "plugins"
-    }},
-    performance = {
-        rtp = {
-            disabled_plugins = {"gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin"}
-        }
-    },
-    rocks = {
-        enabled = false
+  spec = { {
+    import = "plugins"
+  } },
+  performance = {
+    rtp = {
+      disabled_plugins = { "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin" }
     }
+  },
+  rocks = {
+    enabled = false
+  }
 })
 
 -- 5. Set clipboard flow: seamless way: to set standard yank (`y`) and paste (`p`) to ALWAYS use the OS clipboard automatically
@@ -360,11 +495,12 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
+
 -- notes: disable rocks not needed stuff to silence nvim checkhealth
 -- Neovim supports writing plugins in languages like Node, Python, Ruby, and Perl.
--- The health check is warning you that it can't find the necessary bridges for some of these. 
+-- The health check is warning you that it can't find the necessary bridges for some of these.
 
--- 7. Disable hererocks in lazy setup
+-- Disable hererocks in lazy setup
 -- WHAT: Disables Lazy.nvim's built-in support for 'luarocks' (a Lua package manager)
 --       and 'hererocks' (the script Lazy uses to install it).
 -- WHY:  The automatic installation failed, causing annoying errors in `:checkhealth`.

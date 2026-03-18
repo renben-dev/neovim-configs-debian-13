@@ -6,4 +6,5 @@ return {{
         lspconfig.vtsls.setup({})
         lspconfig.eslint.setup({})
     end
-}}
+} :w
+}

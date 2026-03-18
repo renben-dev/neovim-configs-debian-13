@@ -1,12 +1,3 @@
--- return {{
---     "neovim/nvim-lspconfig",
---     config = function()
---         local lspconfig = require("lspconfig")
---         lspconfig.clangd.setup({
---             -- No need to hardcode cmd; Mason ensures it's installed
---         })
---     end
--- }}
 return {
   {
     "neovim/nvim-lspconfig",

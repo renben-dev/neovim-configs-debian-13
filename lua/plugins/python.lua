@@ -2,7 +2,6 @@ return { -- Python LSP and Formatter setup via LSPConfig
 {
     "neovim/nvim-lspconfig",
     config = function()
-        local lspconfig = require("lspconfig")
         -- Pyright for intelligent autocomplete and type checking
         local lspconfig = require("lspconfig")
 
