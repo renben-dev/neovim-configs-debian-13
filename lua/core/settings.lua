@@ -31,3 +31,6 @@ vim.diagnostic.config({
   underline = true,
   signs = true,
 })
+
+-- make all yank/delete/put operations go through the + (system) register automatically
+vim.opt.clipboard = "unnamedplus"

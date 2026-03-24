@@ -18,10 +18,30 @@ return { -- Syntax Highlighting (Treesitter)
   "hrsh7th/cmp-nvim-lsp",
   dependencies = { "hrsh7th/nvim-cmp" } -- ensures cmp is present
 },                                      -- LSP Infrastructure: Mason
+  -- {
+  --   "williamboman/mason.nvim",
+  --   opts = {}
+  -- }, -- LSP servers via Mason
   {
     "williamboman/mason.nvim",
-    opts = {}
-  }, -- LSP servers via Mason
+    opts = {},
+    config = function()
+      require("mason").setup()
+
+      local registry = require("mason-registry")
+
+      local function ensure_installed(pkg)
+        if not registry.is_installed(pkg) then
+          registry.get_package(pkg):install()
+        end
+      end
+
+      -- 🔹 Auto-install formatters
+      ensure_installed("prettier")
+      ensure_installed("black")
+      ensure_installed("clang-format")
+    end,
+  },
   {
     "williamboman/mason-lspconfig.nvim",
     version = "1.*",
@@ -138,4 +158,22 @@ return { -- Syntax Highlighting (Treesitter)
   {
     "numToStr/Comment.nvim",
     opts = {}
-  } }
+  },
+  -- format manager
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        javascript = { "prettier" },
+        typescript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescriptreact = { "prettier" },
+
+        python = { "black" },
+
+        c = { "clang_format" },
+        cpp = { "clang_format" },
+      },
+    },
+  }
+}

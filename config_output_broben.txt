@@ -1,0 +1,481 @@
+
+--- PATH: ~/.config/nvim/lua/core/fttabs.lua ---
+-- File: ~/.config/nvim/lua/core/fttabs.lua
+-- Automatically set tab/indentation per filetype
+local ft_tab_settings = {
+  python = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  javascript = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  typescript = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  lua = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  rust = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  c = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  cpp = { tabstop = 4, shiftwidth = 4, expandtab = true },
+  go = { tabstop = 8, shiftwidth = 8, expandtab = false },  -- Go prefers real tabs
+  make = { tabstop = 8, shiftwidth = 8, expandtab = false }, -- Makefiles require tabs
+  html = { tabstop = 2, shiftwidth = 2, expandtab = true },
+  css = { tabstop = 2, shiftwidth = 2, expandtab = true },
+}
+
+-- Apply settings automatically when a filetype is detected
+for ft, settings in pairs(ft_tab_settings) do
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = ft,
+    callback = function()
+      vim.opt_local.tabstop = settings.tabstop
+      vim.opt_local.shiftwidth = settings.shiftwidth
+      vim.opt_local.expandtab = settings.expandtab
+    end,
+  })
+end
+
+--- PATH: ~/.config/nvim/lua/core/keymaps.lua ---
+local keymap = vim.keymap
+
+-- The Big 3 / Cancellation (Table Item 3)
+keymap.set('n', '<C-c>', '<Esc>')
+
+-- Diagnostic Navigation (Table Items 31 & 33)
+keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = "Show Error" })
+keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Prev Error" })
+keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Next Error" })
+
+-- LSP Formatting (Table Item 25)
+keymap.set('n', '<leader>lf', function() vim.lsp.buf.format { async = true } end, { desc = "LSP Format" })
+
+-- Note: Items 4, 5, 6, 7, 8, 10, 11, 12, 13, 17, 18, 19, 23, 34, 35 
+-- are native to Neovim and require ZERO configuration. They work out of the box.
+
+-- Table Item 13: The "Black Hole" Delete (Doesn't overwrite your clipboard)
+-- Map <leader>d to delete into the black hole register
+keymap.set({'n', 'v'}, '<leader>d', [["_d]], { desc = "Delete to black hole" })
+
+-- Table Item 25: LSP Format (Clean your code)
+keymap.set('n', '<leader>lf', vim.lsp.buf.format, { desc = "LSP Format" })
+
+-- Table Item 31: Show Diagnostic (The floating error window)
+keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = "Show Line Error" })
+
+-- Table Items 33: Diagnostic Jumps
+keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Previous Error" })
+keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Next Error" })
+
+-- Buffer Navigation (Pro tip: use H and L to jump between open files)
+keymap.set('n', 'L', ':bnext<CR>', { silent = true })
+keymap.set('n', 'H', ':bprevious<CR>', { silent = true })
+
+--- PATH: ~/.config/nvim/lua/core/settings.lua ---
+local opt = vim.opt
+local api = vim.api
+
+-- history and memory tweaks
+opt.undofile = true
+opt.swapfile = false
+
+-- Status bar
+opt.showmode = true  -- Show mode in the command area (default is true)
+opt.statusline = "%f %h%m%r %=%{getcwd()} %=%-14.(%l,%c%V%) %P"
+
+-- Tabs and indentation
+opt.tabstop = 4
+opt.shiftwidth = 4
+opt.expandtab = true
+
+-- Line numbers
+opt.number = true
+opt.relativenumber = true
+
+-- Scroll offset
+opt.scrolloff = 8
+
+-- Keymaps to save buffer with Ctrl+S
+api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
+api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>a', { noremap = true, silent = true })
+api.nvim_set_keymap('v', '<C-s>', ':w<CR>', { noremap = true, silent = true })
+
+vim.diagnostic.config({
+  virtual_text = true,
+  underline = true,
+  signs = true,
+})
+
+--- PATH: ~/.config/nvim/lua/plugins/ai.lua ---
+return { -- Plugin 1: gp.nvim (Manual Prompting / Chat)
+-- This replaces CodeCompanion because it works on Neovim 0.10 (Debian 13)
+{
+    "robitx/gp.nvim",
+    config = function()
+        require("gp").setup({
+            providers = {
+                googleai = {
+                    endpoint = "https://generativelanguage.googleapis.com/v1beta/models/{{model}}:streamGenerateContent?key={{secret}}",
+                    secret = os.getenv("GEMINI_API_KEY")
+                }
+            }
+        })
+    end
+}, -- Plugin 2: Minuet AI (Manual-trigger Autocompletion)
+{
+    "milanglacier/minuet-ai.nvim",
+    dependencies = {"nvim-lua/plenary.nvim"},
+    config = function()
+        require("minuet").setup({
+            provider = "gemini",
+            provider_options = {
+                gemini = {
+                    api_key = os.getenv("GEMINI_API_KEY"),
+                    model = "gemini-1.5-flash", -- Flash is better for 4GB RAM
+                    system = "Provide only code snippets. No prose."
+                }
+            },
+            request = {
+                auto_trigger = false -- Saves your tokens
+            }
+        })
+    end,
+    -- This 'keys' section fixes the "rhs: expected nil" error
+    keys = {{
+        "<A-y>", -- Press Alt + y to get an AI completion
+        function()
+            require("minuet").make_cmp_request()
+        end,
+        mode = "i",
+        desc = "Trigger AI Autocomplete"
+    }}
+}}
+
+--- PATH: ~/.config/nvim/lua/plugins/rust.lua ---
+return {{
+    'mrcjkb/rustaceanvim',
+    version = '^5',
+    ft = {'rust'},
+    config = function()
+        vim.g.rustaceanvim = {
+            server = {
+                default_settings = {
+                    ['rust-analyzer'] = {
+                        -- 4GB RAM Optimization
+                        checkOnSave = true,
+                        check = {
+                            command = "clippy"
+                        },
+                        procMacro = {
+                            enable = false
+                        }, -- CRITICAL: Saves RAM
+                        cargo = {
+                            buildScripts = {
+                                enable = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    end
+}}
+
+--- PATH: ~/.config/nvim/lua/plugins/core.lua ---
+-- ~/.config/nvim/lua/plugins/core.lua
+return { -- Syntax Highlighting (Treesitter)
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript", "typescript", "rust" },
+        highlight = {
+          enable = true
+        },
+        indent = {
+          enable = true
+        }
+      })
+    end
+  }, {
+  "hrsh7th/cmp-nvim-lsp",
+  dependencies = { "hrsh7th/nvim-cmp" } -- ensures cmp is present
+},                                      -- LSP Infrastructure: Mason
+  {
+    "williamboman/mason.nvim",
+    opts = {}
+  }, -- LSP servers via Mason
+  {
+    "williamboman/mason-lspconfig.nvim",
+    version = "1.*",
+    dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
+    lazy = false, -- force early load
+    opts = {
+      ensure_installed = { "pyright", "ruff", "rust_analyzer", "vtsls", "eslint", "clangd", "lua_ls" }
+    },
+    config = function(_, opts)
+      local mlsp = require("mason-lspconfig")
+      mlsp.setup({
+        ensure_installed = opts.ensure_installed
+      })
+      -- mlsp.setup_handlers({function(server_name)
+      --     local lspconfig = require("lspconfig")
+      --     lspconfig[server_name].setup({
+      --         capabilities = require("cmp_nvim_lsp").default_capabilities()
+      --     })
+      -- end})
+      mlsp.setup_handlers({
+        -- default handler (all servers)
+        function(server_name)
+          require("lspconfig")[server_name].setup({
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+          })
+        end,
+
+        -- SPECIAL CONFIG FOR LUA
+        ["lua_ls"] = function()
+          require("lspconfig").lua_ls.setup({
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            settings = {
+              Lua = {
+                runtime = {
+                  version = "LuaJIT",
+                },
+                diagnostics = {
+                  globals = { "vim" }, -- this remove squiggles from LUA LSP on the global "vim" variable
+                },
+                workspace = {
+                  library = vim.api.nvim_get_runtime_file("", true),
+                },
+                telemetry = {
+                  enable = false,
+                },
+              },
+            },
+          })
+        end,
+      })
+    end
+  }, -- Auto-install formatters/debuggers
+
+  -- the below cannot uncommented yet because mason-tool-installer must catch up with the current mason version
+  -- {
+  --     "WhoIsSethDaniel/mason-tool-installer.nvim",
+  --     dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"},
+  --     opts = {
+  --         ensure_installed = {"prettier", "clang-format", "debugpy", "codelldb"},
+  --         run_on_start = true,
+  --         start_delay = 3000
+  --     }
+  -- },
+  -- Fuzzy Finder
+  {
+    "ibhagwan/fzf-lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = { {
+      "<leader>ff",
+      "<cmd>FzfLua files<cr>",
+      desc = "Find Files"
+    }, {
+      "<leader>fg",
+      "<cmd>FzfLua live_grep<cr>",
+      desc = "Live Proj Grep"
+    }, {
+      "<leader><space>",
+      "<cmd>FzfLua buffers<cr>",
+      desc = "Switch Buffers"
+    } },
+    opts = {}
+  }, -- Bottom terminal
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = function()
+      require("toggleterm").setup({
+        size = 15,
+        open_mapping = [[<C-\>]],
+        direction = "horizontal",
+        shade_terminals = true,
+        persist_mode = true
+      })
+    end
+  }, -- File navigation sidebar
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    keys = { {
+      "<leader>e",
+      "<cmd>Neotree toggle<cr>",
+      desc = "Toggle NeoTree"
+    } },
+    opts = {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false
+        }
+      }
+    }
+  },
+  {
+    "numToStr/Comment.nvim",
+    opts = {}
+  } }
+
+--- PATH: ~/.config/nvim/lua/plugins/python.lua ---
+return { -- Python LSP and Formatter setup via LSPConfig
+{
+    "neovim/nvim-lspconfig",
+    config = function()
+        -- Pyright for intelligent autocomplete and type checking
+        local lspconfig = require("lspconfig")
+
+        -- Setup Pyright
+        lspconfig.pyright.setup({
+            on_attach = function(client, bufnr)
+                local venv_path = os.getenv("VIRTUAL_ENV")
+                if venv_path then
+                    client.config.settings.python.pythonPath = venv_path .. "/bin/python"
+                end
+            end
+        })
+        -- Ruff for blazing fast linting and formatting
+        lspconfig.ruff.setup({})
+    end
+}, -- Debug Adapter Protocol (DAP) for Python
+{"mfussenegger/nvim-dap"}, {
+    "mfussenegger/nvim-dap-python",
+    dependencies = {"mfussenegger/nvim-dap"},
+    config = function()
+        -- Let dap-python auto-detect debugpy installed by Mason
+        require("dap-python").setup()
+    end
+}}
+
+--- PATH: ~/.config/nvim/lua/plugins/cpp.lua ---
+return {
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      local lspconfig = require("lspconfig")
+      local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      lspconfig.clangd.setup({
+        capabilities = cmp_capabilities,
+        -- Mason-installed clangd will automatically be found in PATH
+      })
+    end,
+  },
+}
+
+--- PATH: ~/.config/nvim/lua/plugins/typescript.lua ---
+return { {
+  "neovim/nvim-lspconfig",
+  config = function()
+    local lspconfig = require("lspconfig")
+    -- Mason-installed servers are automatically detected
+    lspconfig.vtsls.setup({})
+    lspconfig.eslint.setup({})
+  end
+}
+}
+
+--- PATH: ~/.config/nvim/lua/plugins/color_themes.lua ---
+-- ~/.config/nvim/lua/plugins/colors.lua
+ -- Tokyonight
+return {
+{
+    "folke/tokyonight.nvim",
+    lazy = false, -- load immediately
+    priority = 1000, -- load early
+    config = function()
+        vim.cmd.colorscheme("tokyonight") -- set as active colorscheme
+    end
+}, -- Gruvbox (Lua port)
+{
+    "ellisonleao/gruvbox.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.o.background = "dark"
+        -- vim.cmd.colorscheme("gruvbox") -- uncomment to activate
+    end
+}, -- Gruvbox mor
+{
+    "morhetz/gruvbox",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.o.background = "dark" -- must set before colorscheme
+        -- vim.cmd.colorscheme("gruvbox")
+    end
+}, -- Catppuccin
+{
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        require("catppuccin").setup({
+            flavour = "mocha" -- latte, frappe, macchiato, mocha
+        })
+        vim.cmd.colorscheme("catppuccin") -- uncomment to activate
+    end
+}, -- Everforest
+{
+    "sainnhe/everforest",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.o.background = "dark"
+        -- vim.cmd.colorscheme("everforest") -- uncomment to activate
+    end
+}, -- VSCode Dark+
+{
+    "Mofiqul/vscode.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        require("vscode").setup({
+            style = "dark", -- "dark" or "light"
+            transparent = false,
+            italic_comments = true,
+            terminal_colors = true
+        })
+        vim.cmd.colorscheme("vscode") -- uncomment to activate
+    end
+},
+-- VSCode Dark Modern / Arctic
+{
+    "rockyzhang24/arctic.nvim",
+    dependencies = {"rktjmp/lush.nvim"},
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.cmd.colorscheme("arctic")
+    end
+}}
+
+--- PATH: ~/.config/nvim/init.lua ---
+-- ~/.config/nvim/init.lua
+-- 1. Set Leaders, absolutely at Top of init.lua
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- 2. Load Editor Settings
+require("core.settings")
+require("core.fttabs")
+
+-- 3 . Load custom defined keybingings
+require("core.keymaps")
+
+-- 3. Bootstrap lazy.nvim
+
+-- Terminal background sync snippet
+-- Robust terminal background sync for lazy-loaded themes
+-- Terminal background sync (Neovim 0.10+)
+-- Terminal background sync (Neovim 0.10+ safe, lazy.nvim friendly)
+-- notes: disable rocks not needed stuff to silence nvim checkhealth
+-- Neovim supports writing plugins in languages like Node, Python, Ruby, and Perl.
+-- The health check is warning you that it can't find the necessary bridges for some of these.
+
+-- Disable hererocks in lazy setup
+-- WHAT: Disables Lazy.nvim's built-in support for 'luarocks' (a Lua package manager)
+--       and 'hererocks' (the script Lazy uses to install it).
+-- WHY:  The automatic installation failed, causing annoying errors in `:checkhealth`.
+--       Because none of our current plugins actually require Luarocks, we can safely
+--       disable this feature entirely to clear the errors and simplify the setup.

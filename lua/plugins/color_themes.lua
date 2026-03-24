@@ -1,74 +1,125 @@
 -- ~/.config/nvim/lua/plugins/colors.lua
- -- Tokyonight
+-- Tokyonight
 return {
-{
-    "folke/tokyonight.nvim",
+  -- 🌞 Solarized (original, Lua port)
+  {
+    "ishan9299/nvim-solarized-lua",
     lazy = false, -- load immediately
-    priority = 1000, -- load early
+    priority = 1000,
     config = function()
-        vim.cmd.colorscheme("tokyonight") -- set as active colorscheme
+      require("solarized").set()
+      vim.o.background = "dark"
+      vim.cmd.colorscheme("solarized")
+    end,
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    priority = 1000,
+    config = function()
+      require("kanagawa").setup({
+        theme = "wave", -- wave, dragon, lotus
+      })
+    end,
+  },
+  -- 🦊 Nightfox (multiple styles)
+  {
+    "EdenEast/nightfox.nvim",
+    config = function()
+      require("nightfox").setup({})
+    end,
+  },
+  -- 🐙 GitHub theme
+  {
+    "projekt0n/github-nvim-theme",
+    config = function()
+      require("github-theme").setup({})
+    end,
+  },
+  {
+    "craftzdog/solarized-osaka.nvim",
+    priority = 1000, -- load before other UI plugins
+    config = function()
+      require("solarized-osaka").setup({
+        transparent = false,
+        terminal_colors = true,
+        styles = {
+          comments = { italic = true },
+          keywords = { italic = true },
+        },
+      })
+
+      vim.cmd.colorscheme("solarized-osaka")
+    end,
+  },
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,                       -- load immediately
+    priority = 1000,                    -- load early
+    config = function()
+      vim.cmd.colorscheme("tokyonight") -- set as active colorscheme
     end
-}, -- Gruvbox (Lua port)
-{
+  },
+  -- Gruvbox (Lua port)
+  {
     "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-        vim.o.background = "dark"
-        -- vim.cmd.colorscheme("gruvbox") -- uncomment to activate
+      vim.o.background = "dark"
+      -- vim.cmd.colorscheme("gruvbox") -- uncomment to activate
     end
-}, -- Gruvbox mor
-{
+  }, -- Gruvbox mor
+  {
     "morhetz/gruvbox",
     lazy = false,
     priority = 1000,
     config = function()
-        vim.o.background = "dark" -- must set before colorscheme
-        -- vim.cmd.colorscheme("gruvbox")
+      vim.o.background = "dark" -- must set before colorscheme
+      -- vim.cmd.colorscheme("gruvbox")
     end
-}, -- Catppuccin
-{
+  }, -- Catppuccin
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = false,
     priority = 1000,
     config = function()
-        require("catppuccin").setup({
-            flavour = "mocha" -- latte, frappe, macchiato, mocha
-        })
-        vim.cmd.colorscheme("catppuccin") -- uncomment to activate
+      require("catppuccin").setup({
+        flavour = "mocha"               -- latte, frappe, macchiato, mocha
+      })
+      vim.cmd.colorscheme("catppuccin") -- uncomment to activate
     end
-}, -- Everforest
-{
+  },                                    -- Everforest
+  {
     "sainnhe/everforest",
     lazy = false,
     priority = 1000,
     config = function()
-        vim.o.background = "dark"
-        -- vim.cmd.colorscheme("everforest") -- uncomment to activate
+      vim.o.background = "dark"
+      -- vim.cmd.colorscheme("everforest") -- uncomment to activate
     end
-}, -- VSCode Dark+
-{
+  }, -- VSCode Dark+
+  {
     "Mofiqul/vscode.nvim",
     lazy = false,
     priority = 1000,
     config = function()
-        require("vscode").setup({
-            style = "dark", -- "dark" or "light"
-            transparent = false,
-            italic_comments = true,
-            terminal_colors = true
-        })
-        vim.cmd.colorscheme("vscode") -- uncomment to activate
+      require("vscode").setup({
+        style = "dark", -- "dark" or "light"
+        transparent = false,
+        italic_comments = true,
+        terminal_colors = true
+      })
+      vim.cmd.colorscheme("vscode") -- uncomment to activate
     end
-},
--- VSCode Dark Modern / Arctic
-{
+  },
+  -- VSCode Dark Modern / Arctic
+  {
     "rockyzhang24/arctic.nvim",
-    dependencies = {"rktjmp/lush.nvim"},
+    dependencies = { "rktjmp/lush.nvim" },
     lazy = false,
     priority = 1000,
     config = function()
-        vim.cmd.colorscheme("arctic")
+      vim.cmd.colorscheme("arctic")
     end
-}}
+  } }
