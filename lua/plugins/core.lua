@@ -175,5 +175,31 @@ return { -- Syntax Highlighting (Treesitter)
         cpp = { "clang_format" },
       },
     },
-  }
+  },
+  -- Rainbow parentheses/brackets/braces highlighting
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "BufReadPost", -- load after opening a buffer
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [''] = rainbow_delimiters.strategy['global'], -- fallback strategy
+        },
+        query = {
+          [''] = 'rainbow-delimiters', -- default query for all filetypes
+        },
+        highlight = {
+          'RainbowDelimiterRed',
+          'RainbowDelimiterYellow',
+          'RainbowDelimiterBlue',
+          'RainbowDelimiterOrange',
+          'RainbowDelimiterGreen',
+          'RainbowDelimiterViolet',
+          'RainbowDelimiterCyan',
+        },
+      }
+    end,
+  },
 }

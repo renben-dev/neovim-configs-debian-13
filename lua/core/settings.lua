@@ -32,5 +32,11 @@ vim.diagnostic.config({
   signs = true,
 })
 
+-- Enable folding using Treesitter
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.o.foldlevel = 99      -- start with all folds open
+vim.o.foldenable = true
+
 -- make all yank/delete/put operations go through the + (system) register automatically
 vim.opt.clipboard = "unnamedplus"
