@@ -122,7 +122,37 @@ return { -- Syntax Highlighting (Treesitter)
       "<cmd>FzfLua buffers<cr>",
       desc = "Switch Buffers"
     } },
-    opts = {}
+    opts = {
+      -- 1. Enable cycling for all pickers (Tab/Shift-Tab)
+      fzf_opts = {
+        ["--cycle"] = "",
+      },
+      -- 2. Fix the path issue globally
+      defaults = {
+        formatter = "path.filename_first", -- Puts filename first so it's never cut off
+      },
+      -- Optional: Specific override just for the buffers picker
+      buffers = {
+        show_unloaded_buffers = true,
+        sort_lastused = true,
+      },
+      winopts = {
+        width = 0.95,            -- % of screen width
+        height = 0.90,           -- % of screen height
+        preview = {
+          layout = 'horizontal', -- Puts the code preview ABOVE/BELOW the list
+          horizontal = 'right:45%',
+        },
+      },
+      keymap = {
+        builtin = {
+          ["<M-p>"] = "toggle-preview", -- <M-p> is Neovim's code for Alt+p
+        },
+        fzf = {
+          ["alt-p"] = "toggle-preview", -- alt-p is the fzf binary's code for Alt+p
+        },
+      },
+    }
   }, -- Bottom terminal
   {
     "akinsho/toggleterm.nvim",

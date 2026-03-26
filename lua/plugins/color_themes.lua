@@ -4,7 +4,7 @@ return {
   -- 🌞 Solarized (original, Lua port)
   {
     "ishan9299/nvim-solarized-lua",
-    lazy = false, -- load immediately
+    lazy = true, -- load immediately
     priority = 1000,
     config = function()
       require("solarized").set()
@@ -14,6 +14,7 @@ return {
   },
   {
     "rebelot/kanagawa.nvim",
+    lazy=true,
     priority = 1000,
     config = function()
       require("kanagawa").setup({
@@ -24,6 +25,7 @@ return {
   -- 🦊 Nightfox (multiple styles)
   {
     "EdenEast/nightfox.nvim",
+    lazy=true,
     config = function()
       require("nightfox").setup({})
     end,
@@ -31,12 +33,14 @@ return {
   -- 🐙 GitHub theme
   {
     "projekt0n/github-nvim-theme",
+    lazy=true,
     config = function()
       require("github-theme").setup({})
     end,
   },
   {
     "craftzdog/solarized-osaka.nvim",
+    lazy=true,
     priority = 1000, -- load before other UI plugins
     config = function()
       require("solarized-osaka").setup({
@@ -53,7 +57,7 @@ return {
   },
   {
     "folke/tokyonight.nvim",
-    lazy = false,                       -- load immediately
+    lazy=true,
     priority = 1000,                    -- load early
     config = function()
       vim.cmd.colorscheme("tokyonight") -- set as active colorscheme
@@ -62,7 +66,7 @@ return {
   -- Gruvbox (Lua port)
   {
     "ellisonleao/gruvbox.nvim",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       vim.o.background = "dark"
@@ -71,7 +75,7 @@ return {
   }, -- Gruvbox mor
   {
     "morhetz/gruvbox",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       vim.o.background = "dark" -- must set before colorscheme
@@ -81,7 +85,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       require("catppuccin").setup({
@@ -92,7 +96,7 @@ return {
   },                                    -- Everforest
   {
     "sainnhe/everforest",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       vim.o.background = "dark"
@@ -101,7 +105,7 @@ return {
   }, -- VSCode Dark+
   {
     "Mofiqul/vscode.nvim",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       require("vscode").setup({
