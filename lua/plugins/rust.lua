@@ -1,28 +1,27 @@
-return {{
-    'mrcjkb/rustaceanvim',
-    version = '^5',
-    ft = {'rust'},
-    config = function()
-        vim.g.rustaceanvim = {
-            server = {
-                default_settings = {
-                    ['rust-analyzer'] = {
-                        -- 4GB RAM Optimization
-                        checkOnSave = true,
-                        check = {
-                            command = "clippy"
-                        },
-                        procMacro = {
-                            enable = false
-                        }, -- CRITICAL: Saves RAM
-                        cargo = {
-                            buildScripts = {
-                                enable = true
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    end
-}}
+-- legacy
+-- return {
+--   "neovim/nvim-lspconfig",
+--   config = function()
+    -- require("lspconfig").rust_analyzer.setup({
+    --   settings = {
+    --     ["rust-analyzer"] = {
+    --       cargo = { noDeps = true },
+--         },
+--       },
+--     })
+--   end,
+-- }
+return {
+  "neovim/nvim-lspconfig",
+  config = function()
+    vim.lsp.config("rust_analyzer", {
+      settings = {
+        ["rust-analyzer"] = {
+          cargo = { noDeps = true },
+        },
+      },
+    })
+
+    vim.lsp.enable("rust_analyzer")
+  end,
+}

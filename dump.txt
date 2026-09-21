@@ -174,34 +174,59 @@ return { -- Plugin 1: gp.nvim (Manual Prompting / Chat)
 }}
 
 --- PATH: ~/.config/nvim/lua/plugins/rust.lua ---
-return {{
-    'mrcjkb/rustaceanvim',
-    version = '^5',
-    ft = {'rust'},
-    config = function()
-        vim.g.rustaceanvim = {
-            server = {
-                default_settings = {
-                    ['rust-analyzer'] = {
-                        -- 4GB RAM Optimization
-                        checkOnSave = true,
-                        check = {
-                            command = "clippy"
-                        },
-                        procMacro = {
-                            enable = false
-                        }, -- CRITICAL: Saves RAM
-                        cargo = {
-                            buildScripts = {
-                                enable = true
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    end
-}}
+-- return {
+--   {
+--     "neovim/nvim-lspconfig",
+--     version = "v2.5.0",
+--     config = function()
+--       require("lspconfig").rust_analyzer.setup({
+--         autostart = true,
+--
+--         settings = {
+--           ["rust-analyzer"] = {
+--             cargo = {
+--               noDeps = true,
+--             },
+--           },
+--         },
+--       })
+--     end,
+--   },
+-- }
+-- ~/.config/nvim/lua/plugins/rust.lua
+return {
+  "neovim/nvim-lspconfig",
+  config = function()
+    require("lspconfig").rust_analyzer.setup({
+      settings = {
+        ["rust-analyzer"] = {
+          cargo = { noDeps = true },
+        },
+      },
+    })
+  end,
+}
+
+--- PATH: ~/.config/nvim/lua/plugins/lua.lua ---
+return {
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              runtime = { version = "LuaJIT" },
+              diagnostics = { globals = { "vim" } },
+              workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+              telemetry = { enable = false },
+            },
+          },
+        },
+      },
+    },
+  },
+}
 
 --- PATH: ~/.config/nvim/lua/plugins/core.lua ---
 -- ~/.config/nvim/lua/plugins/core.lua
@@ -212,6 +237,10 @@ return { -- Syntax Highlighting (Treesitter)
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript", "typescript", "rust" },
+        auto_install = true,
+        sync_install = false,
+        ignore_install = {},
+        modules = {},
         highlight = {
           enable = true
         },
@@ -223,7 +252,10 @@ return { -- Syntax Highlighting (Treesitter)
   }, {
   "hrsh7th/cmp-nvim-lsp",
   dependencies = { "hrsh7th/nvim-cmp" } -- ensures cmp is present
-},                                      -- LSP Infrastructure: Mason
+},
+
+
+  -- LSP Infrastructure: Mason
   -- {
   --   "williamboman/mason.nvim",
   --   opts = {}
@@ -254,7 +286,7 @@ return { -- Syntax Highlighting (Treesitter)
     dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
     lazy = false, -- force early load
     opts = {
-      ensure_installed = { "pyright", "ruff", "rust_analyzer", "vtsls", "eslint", "clangd", "lua_ls" }
+      ensure_installed = { "pyright", "ruff", "vtsls", "eslint", "clangd", "lua_ls" }
     },
     config = function(_, opts)
       local mlsp = require("mason-lspconfig")
@@ -270,11 +302,15 @@ return { -- Syntax Highlighting (Treesitter)
       mlsp.setup_handlers({
         -- default handler (all servers)
         function(server_name)
+          -- SKIP rust_analyzer so it doesn't race with rustaceanvim
+          if server_name == "rust_analyzer" then
+            return
+          end
+
           require("lspconfig")[server_name].setup({
             capabilities = require("cmp_nvim_lsp").default_capabilities(),
           })
         end,
-
         -- SPECIAL CONFIG FOR LUA
         ["lua_ls"] = function()
           require("lspconfig").lua_ls.setup({
@@ -328,7 +364,37 @@ return { -- Syntax Highlighting (Treesitter)
       "<cmd>FzfLua buffers<cr>",
       desc = "Switch Buffers"
     } },
-    opts = {}
+    opts = {
+      -- 1. Enable cycling for all pickers (Tab/Shift-Tab)
+      fzf_opts = {
+        ["--cycle"] = "",
+      },
+      -- 2. Fix the path issue globally
+      defaults = {
+        formatter = "path.filename_first", -- Puts filename first so it's never cut off
+      },
+      -- Optional: Specific override just for the buffers picker
+      buffers = {
+        show_unloaded_buffers = true,
+        sort_lastused = true,
+      },
+      winopts = {
+        width = 0.95,            -- % of screen width
+        height = 0.90,           -- % of screen height
+        preview = {
+          layout = 'horizontal', -- Puts the code preview ABOVE/BELOW the list
+          horizontal = 'right:45%',
+        },
+      },
+      keymap = {
+        builtin = {
+          ["<M-p>"] = "toggle-preview", -- <M-p> is Neovim's code for Alt+p
+        },
+        fzf = {
+          ["alt-p"] = "toggle-preview", -- alt-p is the fzf binary's code for Alt+p
+        },
+      },
+    }
   }, -- Bottom terminal
   {
     "akinsho/toggleterm.nvim",
@@ -382,32 +448,59 @@ return { -- Syntax Highlighting (Treesitter)
       },
     },
   },
+  -- -- Rainbow parentheses/brackets/braces highlighting
+  -- {
+  --   "HiPhish/rainbow-delimiters.nvim",
+  --   event = "BufReadPost", -- load after opening a buffer
+  --   config = function()
+  --     local rainbow_delimiters = require("rainbow-delimiters")
+  --
+  --     vim.g.rainbow_delimiters = {
+  --       strategy = {
+  --         [''] = rainbow_delimiters.strategy['global'], -- fallback strategy
+  --       },
+  --       query = {
+  --         [''] = 'rainbow-delimiters', -- default query for all filetypes
+  --       },
+  --       highlight = {
+  --         'RainbowDelimiterRed',
+  --         'RainbowDelimiterYellow',
+  --         'RainbowDelimiterBlue',
+  --         'RainbowDelimiterOrange',
+  --         'RainbowDelimiterGreen',
+  --         'RainbowDelimiterViolet',
+  --         'RainbowDelimiterCyan',
+  --       },
+  --     }
+  --   end,
+  -- },
   -- Rainbow parentheses/brackets/braces highlighting
-  {
-    "HiPhish/rainbow-delimiters.nvim",
-    event = "BufReadPost", -- load after opening a buffer
-    config = function()
-      local rainbow_delimiters = require("rainbow-delimiters")
-
-      vim.g.rainbow_delimiters = {
-        strategy = {
-          [''] = rainbow_delimiters.strategy['global'], -- fallback strategy
-        },
-        query = {
-          [''] = 'rainbow-delimiters', -- default query for all filetypes
-        },
-        highlight = {
-          'RainbowDelimiterRed',
-          'RainbowDelimiterYellow',
-          'RainbowDelimiterBlue',
-          'RainbowDelimiterOrange',
-          'RainbowDelimiterGreen',
-          'RainbowDelimiterViolet',
-          'RainbowDelimiterCyan',
-        },
-      }
-    end,
-  },
+  -- {
+  --   "HiPhish/rainbow-delimiters.nvim",
+  --   submodules = false,
+  --   event = "BufReadPost",
+  --   config = function()
+  --     local rainbow_delimiters = require("rainbow-delimiters")
+  --
+  --     require("rainbow-delimiters.setup").setup({
+  --       strategy = {
+  --         [''] = rainbow_delimiters.strategy['global'],
+  --       },
+  --       query = {
+  --         [''] = 'rainbow-delimiters',
+  --       },
+  --       highlight = {
+  --         'RainbowDelimiterRed',
+  --         'RainbowDelimiterYellow',
+  --         'RainbowDelimiterBlue',
+  --         'RainbowDelimiterOrange',
+  --         'RainbowDelimiterGreen',
+  --         'RainbowDelimiterViolet',
+  --         'RainbowDelimiterCyan',
+  --       },
+  --     })
+  --   end,
+  -- },
 }
 
 --- PATH: ~/.config/nvim/lua/plugins/completion.lua ---
@@ -469,48 +562,87 @@ return {
 }
 
 --- PATH: ~/.config/nvim/lua/plugins/python.lua ---
-return { -- Python LSP and Formatter setup via LSPConfig
-{
-    "neovim/nvim-lspconfig",
-    config = function()
-        -- Pyright for intelligent autocomplete and type checking
-        local lspconfig = require("lspconfig")
-
-        -- Setup Pyright
-        lspconfig.pyright.setup({
-            on_attach = function(client, bufnr)
-                local venv_path = os.getenv("VIRTUAL_ENV")
-                if venv_path then
-                    client.config.settings.python.pythonPath = venv_path .. "/bin/python"
-                end
-            end
-        })
-        -- Ruff for blazing fast linting and formatting
-        lspconfig.ruff.setup({})
-    end
-}, -- Debug Adapter Protocol (DAP) for Python
-{"mfussenegger/nvim-dap"}, {
-    "mfussenegger/nvim-dap-python",
-    dependencies = {"mfussenegger/nvim-dap"},
-    config = function()
-        -- Let dap-python auto-detect debugpy installed by Mason
-        require("dap-python").setup()
-    end
-}}
-
---- PATH: ~/.config/nvim/lua/plugins/cpp.lua ---
+-- return { -- Python LSP and Formatter setup via LSPConfig
+-- {
+--     "neovim/nvim-lspconfig",
+--     config = function()
+--         -- Pyright for intelligent autocomplete and type checking
+--         local lspconfig = require("lspconfig")
+--
+--         -- Setup Pyright
+--         lspconfig.pyright.setup({
+--             on_attach = function(client, bufnr)
+--                 local venv_path = os.getenv("VIRTUAL_ENV")
+--                 if venv_path then
+--                     client.config.settings.python.pythonPath = venv_path .. "/bin/python"
+--                 end
+--             end
+--         })
+--         -- Ruff for blazing fast linting and formatting
+--         lspconfig.ruff.setup({})
+--     end
+-- }, -- Debug Adapter Protocol (DAP) for Python
+-- {"mfussenegger/nvim-dap"}, {
+--     "mfussenegger/nvim-dap-python",
+--     dependencies = {"mfussenegger/nvim-dap"},
+--     config = function()
+--         -- Let dap-python auto-detect debugpy installed by Mason
+--         require("dap-python").setup()
+--     end
+-- }}
+-- ~/.config/nvim/lua/plugins/python.lua
 return {
   {
     "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        pyright = {
+          on_attach = function(client, bufnr)
+            local venv_path = os.getenv("VIRTUAL_ENV")
+            if venv_path then
+              client.config.settings.python.pythonPath = venv_path .. "/bin/python"
+            end
+          end,
+        },
+        ruff = {},
+      },
+    },
+  },
+  -- Debugger stays here
+  { "mfussenegger/nvim-dap" },
+  {
+    "mfussenegger/nvim-dap-python",
+    dependencies = { "mfussenegger/nvim-dap" },
     config = function()
-      local lspconfig = require("lspconfig")
-      local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      lspconfig.clangd.setup({
-        capabilities = cmp_capabilities,
-        -- Mason-installed clangd will automatically be found in PATH
-      })
+      require("dap-python").setup()
     end,
+  },
+}
+
+--- PATH: ~/.config/nvim/lua/plugins/cpp.lua ---
+-- return {
+--   {
+--     "neovim/nvim-lspconfig",
+--     config = function()
+--       local lspconfig = require("lspconfig")
+--       local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+--
+--       lspconfig.clangd.setup({
+--         capabilities = cmp_capabilities,
+--         -- Mason-installed clangd will automatically be found in PATH
+--       })
+--     end,
+--   },
+-- }
+-- ~/.config/nvim/lua/plugins/cpp.lua
+return {
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        clangd = {},
+      },
+    },
   },
 }
 
@@ -533,7 +665,7 @@ return {
   -- 🌞 Solarized (original, Lua port)
   {
     "ishan9299/nvim-solarized-lua",
-    lazy = false, -- load immediately
+    lazy = true, -- load immediately
     priority = 1000,
     config = function()
       require("solarized").set()
@@ -543,6 +675,7 @@ return {
   },
   {
     "rebelot/kanagawa.nvim",
+    lazy=true,
     priority = 1000,
     config = function()
       require("kanagawa").setup({
@@ -553,6 +686,7 @@ return {
   -- 🦊 Nightfox (multiple styles)
   {
     "EdenEast/nightfox.nvim",
+    lazy=true,
     config = function()
       require("nightfox").setup({})
     end,
@@ -560,12 +694,14 @@ return {
   -- 🐙 GitHub theme
   {
     "projekt0n/github-nvim-theme",
+    lazy=true,
     config = function()
       require("github-theme").setup({})
     end,
   },
   {
     "craftzdog/solarized-osaka.nvim",
+    lazy=true,
     priority = 1000, -- load before other UI plugins
     config = function()
       require("solarized-osaka").setup({
@@ -582,7 +718,7 @@ return {
   },
   {
     "folke/tokyonight.nvim",
-    lazy = false,                       -- load immediately
+    lazy=true,
     priority = 1000,                    -- load early
     config = function()
       vim.cmd.colorscheme("tokyonight") -- set as active colorscheme
@@ -591,7 +727,7 @@ return {
   -- Gruvbox (Lua port)
   {
     "ellisonleao/gruvbox.nvim",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       vim.o.background = "dark"
@@ -600,7 +736,7 @@ return {
   }, -- Gruvbox mor
   {
     "morhetz/gruvbox",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       vim.o.background = "dark" -- must set before colorscheme
@@ -610,7 +746,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       require("catppuccin").setup({
@@ -621,7 +757,7 @@ return {
   },                                    -- Everforest
   {
     "sainnhe/everforest",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       vim.o.background = "dark"
@@ -630,7 +766,7 @@ return {
   }, -- VSCode Dark+
   {
     "Mofiqul/vscode.nvim",
-    lazy = false,
+    lazy=true,
     priority = 1000,
     config = function()
       require("vscode").setup({
