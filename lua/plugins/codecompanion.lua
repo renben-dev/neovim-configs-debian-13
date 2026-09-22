@@ -326,7 +326,7 @@ return {
 							model = models_providers.gemini.default_model,
 						},
 						opts = {
-							system_prompt = "Start ech response with a joke",
+							-- system_prompt = "Start each response with a joke",
 
 							system_prompt = function(ctx)
 								local default_prompt = ctx.default_system_prompt
@@ -351,6 +351,17 @@ return {
 								)
 								return default_prompt
 							end,
+						},
+						roles = {
+							---The header name for the LLM's messages
+							---@type string|fun(adapter: CodeCompanion.Adapter): string
+							llm = function(adapter)
+								return "🟠CodeCompanion (" .. adapter.formatted_name .. ")"
+							end,
+
+							---The header name for your messages
+							---@type string
+							user = "🟢Me",
 						},
 					},
 					-- Or, just specify the adapter by name
