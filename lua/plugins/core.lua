@@ -1,36 +1,5 @@
 -- ~/.config/nvim/lua/plugins/core.lua
-return { -- Syntax Highlighting (Treesitter)
-	-- legacy master branch
-	-- {
-	-- 	"nvim-treesitter/nvim-treesitter",
-	-- 	branch = "main",
-	-- 	build = ":TSUpdate",
-	-- 	config = function()
-	-- 		require("nvim-treesitter.configs").setup({
-	-- 			ensure_installed = {
-	-- 				"c",
-	-- 				"lua",
-	-- 				"vim",
-	-- 				"vimdoc",
-	-- 				"query",
-	-- 				"python",
-	-- 				"javascript",
-	-- 				"typescript",
-	-- 				"rust",
-	-- 			},
-	-- 			auto_install = true,
-	-- 			sync_install = false,
-	-- 			ignore_install = {},
-	-- 			modules = {},
-	-- 			highlight = {
-	-- 				enable = true,
-	-- 			},
-	-- 			indent = {
-	-- 				enable = true,
-	-- 			},
-	-- 		})
-	-- 	end,
-	-- },
+return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		branch = "main",
@@ -84,110 +53,6 @@ return { -- Syntax Highlighting (Treesitter)
 			ensure_installed("clang-format")
 		end,
 	},
-	-- {
-	--   "williamboman/mason-lspconfig.nvim",
-	--   version = "1.*",
-	--   dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
-	--   lazy = false, -- force early load
-	--   opts = {
-	--     ensure_installed = { "pyright", "ruff", "vtsls", "eslint", "clangd", "lua_ls" }
-	--   },
-	--   config = function(_, opts)
-	--     local mlsp = require("mason-lspconfig")
-	--     mlsp.setup({
-	--       ensure_installed = opts.ensure_installed
-	--     })
-	--     -- mlsp.setup_handlers({function(server_name)
-	--     --     local lspconfig = require("lspconfig")
-	--     --     lspconfig[server_name].setup({
-	--     --         capabilities = require("cmp_nvim_lsp").default_capabilities()
-	--     --     })
-	--     -- end})
-	--     mlsp.setup_handlers({
-	--       -- default handler (all servers)
-	--       function(server_name)
-	--         -- SKIP rust_analyzer so it doesn't race with rustaceanvim
-	--         if server_name == "rust_analyzer" then
-	--           return
-	--         end
-	--
-	--         require("lspconfig")[server_name].setup({
-	--           capabilities = require("cmp_nvim_lsp").default_capabilities(),
-	--         })
-	--       end,
-	--       -- SPECIAL CONFIG FOR LUA
-	--       ["lua_ls"] = function()
-	--         require("lspconfig").lua_ls.setup({
-	--           capabilities = require("cmp_nvim_lsp").default_capabilities(),
-	--           settings = {
-	--             Lua = {
-	--               runtime = {
-	--                 version = "LuaJIT",
-	--               },
-	--               diagnostics = {
-	--                 globals = { "vim" }, -- this remove squiggles from LUA LSP on the global "vim" variable
-	--               },
-	--               workspace = {
-	--                 library = vim.api.nvim_get_runtime_file("", true),
-	--               },
-	--               telemetry = {
-	--                 enable = false,
-	--               },
-	--             },
-	--           },
-	--         })
-	--       end,
-	--     })
-	--   end
-	-- }, -- Auto-install formatters/debuggers
-
-	-- legacy lspconfig syntax
-	-- {
-	--   "williamboman/mason-lspconfig.nvim",
-	--   dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
-	--   lazy = false,
-	--   opts = {
-	--     ensure_installed = { "pyright", "ruff", "vtsls", "eslint", "clangd", "lua_ls", "rust_analyzer" },
-	--   },
-	--   config = function(_, opts)
-	--     local mlsp = require("mason-lspconfig")
-	--     mlsp.setup({
-	--       ensure_installed = opts.ensure_installed,
-	--     })
-	--     mlsp.setup_handlers({
-	--       -- Default handler for all servers (rust_analyzer, pyright, clangd, vtsls, ruff, etc.)
-	--       function(server_name)
-	--         require("lspconfig")[server_name].setup({
-	--           capabilities = require("cmp_nvim_lsp").default_capabilities(),
-	--         })
-	--       end,
-	--
-	--       -- Custom handler for Lua (fixes Neovim API globals and autocompletion)
-	--       ["lua_ls"] = function()
-	--         require("lspconfig").lua_ls.setup({
-	--           capabilities = require("cmp_nvim_lsp").default_capabilities(),
-	--           settings = {
-	--             Lua = {
-	--               runtime = {
-	--                 version = "LuaJIT",
-	--               },
-	--               diagnostics = {
-	--                 globals = { "vim" },
-	--               },
-	--               workspace = {
-	--                 library = vim.api.nvim_get_runtime_file("", true),
-	--               },
-	--               telemetry = {
-	--                 enable = false,
-	--               },
-	--             },
-	--           },
-	--         })
-	--       end,
-	--     })
-	--   end,
-	-- },
-
 	{
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = {
@@ -257,17 +122,6 @@ return { -- Syntax Highlighting (Treesitter)
 			})
 		end,
 	},
-
-	-- the below cannot uncommented yet because mason-tool-installer must catch up with the current mason version
-	-- {
-	--     "WhoIsSethDaniel/mason-tool-installer.nvim",
-	--     dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"},
-	--     opts = {
-	--         ensure_installed = {"prettier", "clang-format", "debugpy", "codelldb"},
-	--         run_on_start = true,
-	--         start_delay = 3000
-	--     }
-	-- },
 	-- Fuzzy Finder
 	{
 		"ibhagwan/fzf-lua",
@@ -373,57 +227,57 @@ return { -- Syntax Highlighting (Treesitter)
 			},
 		},
 	},
-	-- -- Rainbow parentheses/brackets/braces highlighting
-	-- {
-	--   "HiPhish/rainbow-delimiters.nvim",
-	--   event = "BufReadPost", -- load after opening a buffer
-	--   config = function()
-	--     local rainbow_delimiters = require("rainbow-delimiters")
-	--
-	--     vim.g.rainbow_delimiters = {
-	--       strategy = {
-	--         [''] = rainbow_delimiters.strategy['global'], -- fallback strategy
-	--       },
-	--       query = {
-	--         [''] = 'rainbow-delimiters', -- default query for all filetypes
-	--       },
-	--       highlight = {
-	--         'RainbowDelimiterRed',
-	--         'RainbowDelimiterYellow',
-	--         'RainbowDelimiterBlue',
-	--         'RainbowDelimiterOrange',
-	--         'RainbowDelimiterGreen',
-	--         'RainbowDelimiterViolet',
-	--         'RainbowDelimiterCyan',
-	--       },
-	--     }
-	--   end,
-	-- },
 	-- Rainbow parentheses/brackets/braces highlighting
-	-- {
-	--   "HiPhish/rainbow-delimiters.nvim",
-	--   submodules = false,
-	--   event = "BufReadPost",
-	--   config = function()
-	--     local rainbow_delimiters = require("rainbow-delimiters")
-	--
-	--     require("rainbow-delimiters.setup").setup({
-	--       strategy = {
-	--         [''] = rainbow_delimiters.strategy['global'],
-	--       },
-	--       query = {
-	--         [''] = 'rainbow-delimiters',
-	--       },
-	--       highlight = {
-	--         'RainbowDelimiterRed',
-	--         'RainbowDelimiterYellow',
-	--         'RainbowDelimiterBlue',
-	--         'RainbowDelimiterOrange',
-	--         'RainbowDelimiterGreen',
-	--         'RainbowDelimiterViolet',
-	--         'RainbowDelimiterCyan',
-	--       },
-	--     })
-	--   end,
-	-- },
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		event = "BufReadPost", -- load after opening a buffer
+		config = function()
+			local rainbow_delimiters = require("rainbow-delimiters")
+
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"], -- fallback strategy
+				},
+				query = {
+					[""] = "rainbow-delimiters", -- default query for all filetypes
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+			}
+		end,
+	},
+	-- Rainbow parentheses/brackets/braces highlighting
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		submodules = false,
+		event = "BufReadPost",
+		config = function()
+			local rainbow_delimiters = require("rainbow-delimiters")
+
+			require("rainbow-delimiters.setup").setup({
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+			})
+		end,
+	},
 }
