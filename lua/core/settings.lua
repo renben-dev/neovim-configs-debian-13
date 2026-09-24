@@ -1,4 +1,4 @@
-local opt = vim.opt
+l:lua print(vim.inspect(require("nvim-treesitter").get_install_dir()))ocal opt = vim.opt
 local api = vim.api
 
 -- history and memory tweaks
@@ -6,7 +6,7 @@ opt.undofile = true
 opt.swapfile = false
 
 -- Status bar
-opt.showmode = true  -- Show mode in the command area (default is true)
+opt.showmode = true -- Show mode in the command area (default is true)
 opt.statusline = "%f %h%m%r %=%{getcwd()} %=%-14.(%l,%c%V%) %P"
 
 -- Tabs and indentation
@@ -22,21 +22,26 @@ opt.relativenumber = true
 opt.scrolloff = 8
 
 -- Keymaps to save buffer with Ctrl+S
-api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
-api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>a', { noremap = true, silent = true })
-api.nvim_set_keymap('v', '<C-s>', ':w<CR>', { noremap = true, silent = true })
+api.nvim_set_keymap("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
+api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true, silent = true })
+api.nvim_set_keymap("v", "<C-s>", ":w<CR>", { noremap = true, silent = true })
 
 vim.diagnostic.config({
-  virtual_text = true,
-  underline = true,
-  signs = true,
+	virtual_text = true,
+	underline = true,
+	signs = true,
 })
 
 -- Enable folding using Treesitter
+-- vim.o.foldmethod = "expr"
+-- vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 vim.o.foldmethod = "expr"
-vim.o.foldexpr = "nvim_treesitter#foldexpr()"
-vim.o.foldlevel = 99      -- start with all folds open
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldlevel = 99 -- start with all folds open
 vim.o.foldenable = true
 
 -- make all yank/delete/put operations go through the + (system) register automatically
 vim.opt.clipboard = "unnamedplus"
+
+-- disable all highlight for json like files, renben: I encountered 60 sec open time on 8Mb json files
+vim.cmd("syntax off")
