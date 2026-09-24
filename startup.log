@@ -1,0 +1,558 @@
+--- Startup times for process: Primary (or UI client) ---
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.006  000.006: --- NVIM STARTING ---
+000.392  000.386: event init
+000.663  000.270: early init
+000.851  000.189: locale set
+000.990  000.139: init first window
+001.993  001.003: inits 1
+002.034  000.041: window checked
+002.052  000.017: parsing arguments
+003.555  000.112  000.112: require('vim._core.shared')
+003.785  000.021  000.021: require('string.buffer')
+003.878  000.160  000.139: require('vim.inspect')
+004.011  000.108  000.108: require('vim._core.options')
+004.019  000.451  000.183: require('vim._core.editor')
+004.159  000.137  000.137: require('vim._core.system')
+004.164  000.779  000.079: require('vim._init_packages')
+004.171  001.340: init lua interpreter
+008.194  004.023: nvim_ui_attach
+009.288  001.094: nvim_set_client_info
+009.300  000.011: --- NVIM STARTED ---
+
+--- Startup times for process: Embedded ---
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.004  000.004: --- NVIM STARTING ---
+000.386  000.381: event init
+000.621  000.235: early init
+000.776  000.155: locale set
+000.920  000.144: init first window
+001.899  000.979: inits 1
+001.927  000.028: window checked
+001.934  000.007: parsing arguments
+003.095  000.145  000.145: require('vim._core.shared')
+003.416  000.012  000.012: require('string.buffer')
+003.526  000.223  000.211: require('vim.inspect')
+003.699  000.145  000.145: require('vim._core.options')
+003.709  000.602  000.234: require('vim._core.editor')
+003.858  000.144  000.144: require('vim._core.system')
+003.864  000.964  000.073: require('vim._init_packages')
+003.869  000.971: init lua interpreter
+004.015  000.146: expanding arguments
+004.066  000.051: inits 2
+004.686  000.621: init highlight
+004.692  000.006: waiting for UI
+004.963  000.271: done waiting for UI
+004.977  000.014: clear screen
+005.687  000.042  000.042: require('vim.keymap')
+008.955  000.472  000.472: sourcing nvim_exec2()
+009.074  000.046  000.046: require('vim._core.log')
+011.010  006.021  005.461: require('vim._core.defaults')
+011.053  000.055: init default mappings & autocommands
+013.933  000.223  000.223: sourcing /home/renzo/.local/nvim/share/nvim/runtime/ftplugin.vim
+014.108  000.078  000.078: sourcing /home/renzo/.local/nvim/share/nvim/runtime/indent.vim
+018.873  000.028  000.028: require('vim.F')
+019.102  004.304  004.276: require('vim.diagnostic')
+023.767  000.255  000.255: require('vim.treesitter.language')
+023.862  000.080  000.080: require('vim.func')
+024.198  000.326  000.326: require('vim.treesitter._range')
+024.431  000.202  000.202: require('vim.func._memoize')
+024.770  003.070  002.207: require('vim.treesitter.query')
+024.860  004.740  001.671: require('vim.treesitter.languagetree')
+024.891  005.687  000.946: require('vim.treesitter')
+025.751  000.852  000.852: require('vim.treesitter._fold')
+026.485  000.329  000.329: sourcing /home/renzo/.local/nvim/share/nvim/runtime/syntax/nosyntax.vim
+026.504  000.545  000.216: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+026.518  012.015  000.627: require('core.settings')
+027.195  000.671  000.671: require('core.fttabs')
+034.951  003.382  003.382: require('vim.lsp.protocol')
+035.144  000.132  000.132: require('vim.fs')
+035.266  004.252  000.738: require('vim.lsp.log')
+038.051  000.022  000.022: require('vim._core.util')
+038.086  002.804  002.782: require('vim.lsp.util')
+038.913  000.338  000.338: require('vim.lsp.sync')
+038.924  000.831  000.493: require('vim.lsp._changetracking')
+039.854  000.249  000.249: require('vim.lsp._transport')
+039.871  000.011  000.011: require('vim._core.stringbuffer')
+039.981  001.053  000.792: require('vim.lsp.rpc')
+040.052  012.400  003.460: require('vim.lsp')
+042.073  002.014  002.014: require('vim.lsp.buf')
+042.138  014.931  000.517: require('core.keymaps')
+043.179  000.912  000.912: require('lazy')
+043.244  000.043  000.043: require('ffi')
+043.570  000.268  000.268: require('vim.uri')
+043.603  000.350  000.082: require('vim.loader')
+044.050  000.330  000.330: require('lazy.stats')
+044.458  000.368  000.368: require('lazy.core.util')
+045.080  000.612  000.612: require('lazy.core.config')
+046.870  000.896  000.896: require('lazy.core.handler')
+048.361  000.455  000.455: require('lazy.pkg')
+048.383  000.833  000.378: require('lazy.core.meta')
+048.402  001.514  000.681: require('lazy.core.plugin')
+048.425  003.336  000.926: require('lazy.core.loader')
+049.179  000.178  000.178: require('lazy.core.fragments')
+055.875  000.177  000.177: require('lazy.core.handler.event')
+056.009  000.118  000.118: require('lazy.core.handler.ft')
+056.176  000.158  000.158: require('lazy.core.handler.cmd')
+056.444  000.260  000.260: require('lazy.core.handler.keys')
+057.000  000.017  000.017: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+057.031  000.005  000.005: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+057.055  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+057.079  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+058.225  000.244  000.244: sourcing nvim_exec2() called at /home/renzo/.local/nvim/share/nvim/runtime/filetype.lua:0
+058.233  000.409  000.166: sourcing /home/renzo/.local/nvim/share/nvim/runtime/filetype.lua
+058.241  000.479  000.069: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+058.657  000.008  000.008: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+058.678  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+058.920  000.007  000.007: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+058.952  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+059.185  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+059.204  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+060.128  000.111  000.111: require('solarized-osaka.util')
+060.135  000.214  000.104: require('solarized-osaka.theme')
+060.250  000.112  000.112: require('solarized-osaka.config')
+060.260  001.024  000.698: require('solarized-osaka')
+060.493  000.009  000.009: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+060.515  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+062.260  001.732  001.732: require('catppuccin')
+063.448  000.309  000.309: require('vim._async')
+063.498  000.821  000.511: require('vim.pack')
+064.367  000.423  000.423: require('vim.iter')
+068.296  005.801  004.558: require('catppuccin.lib.detect_integrations')
+068.493  000.186  000.186: require('catppuccin.utils.integration_mappings')
+068.747  000.148  000.148: require('catppuccin.lib.hashing')
+069.328  000.081  000.081: sourcing /home/renzo/.local/share/nvim/lazy/lush.nvim/plugin/lush.vim
+069.337  000.142  000.062: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+069.356  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+069.379  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+069.401  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+069.430  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+071.407  000.196  000.196: require('lush.math')
+071.551  000.137  000.137: require('lush.vivid.rgb.convert')
+071.557  000.499  000.166: require('lush.vivid.hsl.convert')
+071.729  000.170  000.170: require('lush.vivid.hsl_like')
+071.738  000.778  000.110: require('lush.vivid.hsl.type')
+072.221  000.229  000.229: require('lush.vivid.hsluv.lib')
+072.227  000.352  000.123: require('lush.vivid.hsluv.convert')
+072.234  000.493  000.141: require('lush.vivid.hsluv.type')
+072.243  001.420  000.149: require('lush')
+073.998  000.298  000.298: require('lush.errors')
+074.014  001.355  001.058: require('lush.parser')
+083.605  011.359  010.004: require('lush_theme.arctic')
+083.969  000.328  000.328: sourcing nvim_exec2() called at /home/renzo/.local/share/nvim/lazy/arctic.nvim/colors/arctic.lua:0
+084.124  000.147  000.147: require('lush.compiler')
+086.959  016.254  003.000: sourcing /home/renzo/.local/share/nvim/lazy/arctic.nvim/colors/arctic.lua
+087.087  000.008  000.008: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+087.107  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+087.475  000.007  000.007: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+087.492  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+088.013  000.195  000.195: require('vscode.config')
+088.612  000.593  000.593: require('vscode.theme')
+088.899  000.283  000.283: require('vscode.utils')
+088.907  001.407  000.336: require('vscode')
+089.345  000.054  000.054: sourcing /home/renzo/.local/share/nvim/lazy/nightfox.nvim/plugin/nightfox.vim
+089.354  000.115  000.060: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+089.408  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+089.436  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+090.103  000.154  000.154: require('nightfox.lib.collect')
+090.247  000.139  000.139: require('nightfox.util')
+090.659  000.834  000.541: require('nightfox.config')
+090.667  001.222  000.388: require('nightfox')
+090.810  000.140  000.140: require('nightfox.override')
+091.065  000.181  000.181: require('nightfox.lib.hash')
+091.175  000.009  000.009: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+091.201  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+091.639  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+091.677  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+092.314  000.629  000.629: require('kanagawa')
+092.751  000.109  000.109: sourcing /home/renzo/.local/share/nvim/lazy/github-nvim-theme/plugin/github_theme.lua
+092.761  000.167  000.057: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+092.775  000.005  000.005: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+092.806  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+093.506  000.122  000.122: require('github-theme.lib.collect')
+093.649  000.137  000.137: require('github-theme.util')
+093.882  000.620  000.361: require('github-theme.config')
+094.041  000.153  000.153: require('github-theme.override')
+094.058  001.244  000.471: require('github-theme')
+094.412  000.215  000.215: require('github-theme.lib.hash')
+094.931  000.015  000.015: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+094.971  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+096.176  000.171  000.171: require('mason-core.path')
+096.828  000.160  000.160: require('mason-core.functional.data')
+097.038  000.198  000.198: require('mason-core.functional.function')
+097.332  000.268  000.268: require('mason-core.functional.list')
+097.531  000.158  000.158: require('mason-core.functional.relation')
+097.818  000.275  000.275: require('mason-core.functional.logic')
+097.968  000.137  000.137: require('mason-core.functional.number')
+098.161  000.171  000.171: require('mason-core.functional.string')
+098.426  000.184  000.184: require('mason-core.functional.table')
+098.595  000.153  000.153: require('mason-core.functional.type')
+098.607  002.197  000.493: require('mason-core.functional')
+098.867  002.681  000.485: require('mason-core.platform')
+099.105  000.231  000.231: require('mason.settings')
+099.121  003.295  000.212: require('mason-core.installer.InstallLocation')
+100.111  000.373  000.373: require('mason-core.log')
+100.122  000.596  000.224: require('mason-core.EventEmitter')
+100.317  000.191  000.191: require('mason-registry.sources')
+100.541  001.414  000.627: require('mason-registry')
+100.552  005.560  000.851: require('mason')
+101.134  000.429  000.429: require('mason.api.command')
+107.089  004.182  004.182: require('vim.filetype')
+108.211  000.064  000.064: require('luasnip.util.types')
+108.219  000.142  000.079: require('luasnip.util.ext_opts')
+108.458  000.058  000.058: require('luasnip.util.lazy_table')
+108.530  000.067  000.067: require('luasnip.extras.filetype_functions')
+108.544  000.248  000.123: require('luasnip.default_config')
+108.549  000.328  000.080: require('luasnip.session')
+108.554  000.962  000.492: require('luasnip.config')
+108.604  005.893  000.749: sourcing /home/renzo/.local/share/nvim/lazy/LuaSnip/plugin/luasnip.lua
+108.619  005.964  000.071: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+108.736  000.050  000.050: sourcing /home/renzo/.local/share/nvim/lazy/LuaSnip/plugin/luasnip.vim
+108.744  000.109  000.059: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+108.758  000.005  000.005: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+108.779  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+109.035  000.007  000.007: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+109.058  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+109.510  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+109.558  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+110.069  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+110.088  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+110.442  000.109  000.109: require('cmp.utils.api')
+110.675  000.103  000.103: require('cmp.types.cmp')
+110.940  000.131  000.131: require('cmp.utils.misc')
+110.972  000.289  000.158: require('cmp.types.lsp')
+111.073  000.096  000.096: require('cmp.types.vim')
+111.081  000.631  000.144: require('cmp.types')
+111.181  000.097  000.097: require('cmp.utils.highlight')
+111.441  000.135  000.135: require('cmp.utils.debug')
+111.463  000.275  000.140: require('cmp.utils.autocmd')
+112.652  000.029  000.029: sourcing nvim_exec2() called at /home/renzo/.local/share/nvim/lazy/nvim-cmp/plugin/cmp.lua:0
+112.667  002.476  001.335: sourcing /home/renzo/.local/share/nvim/lazy/nvim-cmp/plugin/cmp.lua
+112.683  002.551  000.075: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+112.707  000.007  000.007: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+112.749  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+113.518  000.241  000.241: require('cmp.utils.char')
+113.538  000.380  000.138: require('cmp.utils.str')
+113.898  000.099  000.099: require('cmp.utils.buffer')
+113.922  000.265  000.166: require('cmp.utils.keymap')
+113.930  000.387  000.122: require('cmp.utils.feedkeys')
+114.311  000.128  000.128: require('cmp.config.mapping')
+114.417  000.099  000.099: require('cmp.utils.cache')
+114.671  000.122  000.122: require('cmp.config.compare')
+114.775  000.097  000.097: require('cmp.config.window')
+114.782  000.356  000.137: require('cmp.config.default')
+114.820  000.753  000.170: require('cmp.config')
+114.846  000.911  000.159: require('cmp.utils.async')
+115.046  000.090  000.090: require('cmp.utils.pattern')
+115.057  000.205  000.115: require('cmp.context')
+115.674  000.230  000.230: require('cmp.utils.snippet')
+115.805  000.122  000.122: require('cmp.matcher')
+116.624  001.390  001.039: require('cmp.entry')
+116.640  001.579  000.189: require('cmp.source')
+116.837  000.073  000.073: require('cmp.utils.event')
+117.104  000.069  000.069: require('cmp.utils.options')
+117.113  000.184  000.115: require('cmp.utils.window')
+117.117  000.275  000.091: require('cmp.view.docs_view')
+117.268  000.149  000.149: require('cmp.view.custom_entries_view')
+117.387  000.115  000.115: require('cmp.view.wildmenu_entries_view')
+117.487  000.096  000.096: require('cmp.view.native_entries_view')
+117.604  000.112  000.112: require('cmp.view.ghost_text_view')
+117.622  000.979  000.158: require('cmp.view')
+118.174  005.200  000.758: require('cmp.core')
+118.409  000.082  000.082: require('cmp.config.sources')
+118.534  005.772  000.491: require('cmp')
+119.065  000.111  000.111: require('vim.version')
+121.265  002.380  002.269: require('luasnip.util.vimversion')
+121.284  002.519  000.140: require('luasnip.util.util')
+121.685  000.099  000.099: require('luasnip.util.str')
+121.759  000.069  000.069: require('luasnip.util.table')
+121.829  000.066  000.066: require('luasnip.nodes.key_indexer')
+121.999  000.164  000.164: require('luasnip.util.feedkeys')
+122.133  000.129  000.129: require('luasnip.nodes.util.snippet_string')
+122.148  000.860  000.333: require('luasnip.nodes.util')
+122.322  000.070  000.070: require('luasnip.session.snippet_collection.source')
+122.400  000.073  000.073: require('luasnip.util.auto_table')
+122.413  000.262  000.118: require('luasnip.session.snippet_collection')
+122.679  000.087  000.087: require('luasnip.util.select')
+122.790  000.067  000.067: require('luasnip.util.time')
+123.614  001.120  000.966: require('luasnip.util._builtin_vars')
+123.727  001.311  000.190: require('luasnip.util.environ')
+123.816  000.084  000.084: require('luasnip.util.extend_decorator')
+124.047  000.124  000.124: require('luasnip.util.path')
+124.458  000.278  000.278: require('luasnip.util.log')
+124.478  000.426  000.149: require('luasnip.loaders.util')
+124.583  000.102  000.102: require('luasnip.loaders.data')
+124.860  000.273  000.273: require('luasnip.loaders.fs_watchers')
+124.874  001.054  000.129: require('luasnip.loaders')
+124.927  006.388  000.298: require('luasnip')
+125.714  000.017  000.017: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+125.744  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+126.818  000.119  000.119: require('Comment.config')
+127.356  000.387  000.387: require('Comment.ft')
+127.386  000.562  000.175: require('Comment.utils')
+127.592  000.202  000.202: require('Comment.opfunc')
+127.791  000.193  000.193: require('Comment.extra')
+127.806  001.706  000.630: require('Comment.api')
+128.065  002.068  000.362: sourcing /home/renzo/.local/share/nvim/lazy/Comment.nvim/plugin/Comment.lua
+128.086  002.138  000.070: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+128.118  000.014  000.014: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+128.159  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+128.561  000.294  000.294: require('Comment')
+129.686  000.360  000.360: sourcing /home/renzo/.local/share/nvim/lazy/nvim-dap/plugin/dap.lua
+129.704  000.451  000.091: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+129.729  000.009  000.009: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+129.769  000.007  000.007: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+130.639  000.010  000.010: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+130.674  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+133.310  000.325  000.325: require('gp.defaults')
+133.411  001.094  000.769: require('gp.config')
+133.813  000.166  000.166: require('gp.logger')
+133.975  000.157  000.157: require('gp.helper')
+134.249  000.146  000.146: require('gp.tasker')
+134.256  000.276  000.130: require('gp.render')
+134.272  000.846  000.246: require('gp.deprecator')
+134.644  000.188  000.188: require('gp.vault')
+134.669  000.394  000.206: require('gp.dispatcher')
+134.933  000.125  000.125: require('gp.spinner')
+134.945  000.272  000.147: require('gp.imager')
+135.111  000.162  000.162: require('gp.whisper')
+135.152  004.464  001.696: require('gp')
+152.520  000.017  000.017: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+152.545  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+152.773  000.092  000.092: require('cmp_nvim_lsp.source')
+152.781  000.216  000.125: require('cmp_nvim_lsp')
+154.166  000.055  000.055: sourcing /home/renzo/.local/share/nvim/lazy/plenary.nvim/plugin/plenary.vim
+154.175  000.111  000.056: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+154.204  000.005  000.005: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+154.226  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+155.133  000.411  000.411: sourcing /home/renzo/.local/share/nvim/lazy/nvim-treesitter/plugin/filetypes.lua
+155.145  000.463  000.051: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+155.354  000.147  000.147: sourcing /home/renzo/.local/share/nvim/lazy/nvim-treesitter/plugin/nvim-treesitter.lua
+155.365  000.205  000.058: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+155.488  000.061  000.061: sourcing /home/renzo/.local/share/nvim/lazy/nvim-treesitter/plugin/query_predicates.lua
+155.496  000.109  000.048: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+155.509  000.005  000.005: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+155.530  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+156.011  000.474  000.474: require('nvim-treesitter')
+156.106  000.090  000.090: require('nvim-treesitter.config')
+156.324  000.097  000.097: require('nvim-treesitter.async')
+156.401  000.073  000.073: require('nvim-treesitter.log')
+156.864  000.458  000.458: require('nvim-treesitter.parsers')
+156.935  000.066  000.066: require('nvim-treesitter.util')
+156.950  000.834  000.140: require('nvim-treesitter.install')
+157.275  000.319  000.319: require('nvim-treesitter.parsers')
+158.138  000.064  000.064: sourcing /home/renzo/.local/share/nvim/lazy/codecompanion-model-selector.nvim/plugin/cc_model_selector.lua
+158.148  000.124  000.060: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+158.163  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+158.182  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+158.692  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+158.712  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+159.011  000.193  000.193: sourcing /home/renzo/.local/share/nvim/lazy/codecompanion.nvim/plugin/codecompanion.lua
+159.021  000.244  000.050: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+159.033  000.005  000.005: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+159.053  000.003  000.003: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+159.270  000.074  000.074: require('codecompanion._extensions')
+162.845  000.097  000.097: sourcing /home/renzo/.local/share/nvim/lazy/nvim-web-devicons/plugin/nvim-web-devicons.vim
+162.864  000.195  000.098: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+162.887  000.008  000.008: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+162.920  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+163.296  000.228  000.228: sourcing /home/renzo/.local/share/nvim/lazy/fzf-lua/plugin/fzf-lua.lua
+163.311  000.304  000.076: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+163.411  000.010  000.010: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+163.452  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+165.582  000.587  000.587: require('fzf-lua.utils')
+166.050  000.165  000.165: require('fzf-lua.lib.base64')
+166.537  000.480  000.480: require('fzf-lua.lib.serpent')
+166.549  000.956  000.311: require('fzf-lua.libuv')
+166.573  001.779  000.236: require('fzf-lua.path')
+167.229  000.329  000.329: require('fzf-lua.actions')
+167.519  000.084  000.084: require('fzf-lua.class')
+167.546  000.312  000.228: require('fzf-lua.devicons')
+168.138  000.119  000.119: require('fzf-lua.previewer')
+169.267  001.714  001.595: require('fzf-lua.defaults')
+169.283  002.706  000.352: require('fzf-lua.config')
+169.432  000.036  000.036: sourcing /home/renzo/.local/share/nvim/lazy/fzf-lua/autoload/fzf_lua.vim
+169.441  000.100  000.064: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+170.420  000.341  000.341: require('fzf-lua.win')
+170.749  000.092  000.092: require('fzf-lua.fzf')
+170.901  000.146  000.146: require('fzf-lua.shell')
+170.922  000.495  000.257: require('fzf-lua.core')
+171.114  000.174  000.174: require('fzf-lua.make_entry')
+171.128  007.582  001.987: require('fzf-lua')
+172.422  011.593  003.483: require('fzf-lua')
+173.793  014.160  002.567: require('codecompanion.providers')
+174.354  000.068  000.068: require('plenary.tbl')
+174.362  000.145  000.077: require('plenary.vararg.rotate')
+174.365  000.220  000.075: require('plenary.vararg')
+174.464  000.096  000.096: require('plenary.errors')
+174.539  000.071  000.071: require('plenary.functional')
+174.546  000.483  000.095: require('plenary.async.async')
+174.899  000.072  000.072: require('plenary.async.structs')
+174.910  000.175  000.103: require('plenary.async.control')
+174.922  000.262  000.088: require('plenary.async.util')
+174.926  000.333  000.070: require('plenary.async.tests')
+174.929  000.958  000.143: require('plenary.async')
+175.081  000.150  000.150: require('codecompanion.utils.log')
+175.094  001.295  000.186: require('codecompanion.utils.ui')
+175.662  016.387  000.933: require('codecompanion.config')
+175.769  000.100  000.100: require('codecompanion.utils.markdown')
+175.787  016.719  000.158: require('codecompanion')
+176.894  000.170  000.170: require('codecompanion.utils.files')
+177.204  000.153  000.153: require('codecompanion.adapters.utils')
+177.608  000.235  000.235: require('codecompanion.triggers')
+177.662  000.451  000.216: require('codecompanion.commands')
+178.961  000.335  000.335: require('codecompanion.utils.hash')
+178.993  000.740  000.405: require('codecompanion.interactions.code_review.baseline')
+179.301  000.301  000.301: require('codecompanion.interactions.code_review.diff')
+179.997  000.279  000.279: require('codecompanion.interactions.shared.ui')
+180.023  000.713  000.434: require('codecompanion.interactions.shared.input')
+180.499  000.261  000.261: require('codecompanion.utils.keymaps')
+180.520  000.491  000.231: require('codecompanion.interactions.code_review.keymaps')
+180.833  000.308  000.308: require('codecompanion.interactions.code_review.store')
+181.112  000.272  000.272: require('codecompanion.interactions.code_review.ui')
+181.437  000.318  000.318: require('codecompanion.utils')
+181.470  003.749  000.607: require('codecompanion.interactions.code_review')
+190.400  000.577  000.577: require('codecompanion.interactions.shared.edited_files')
+191.097  000.549  000.549: require('codecompanion.integrations')
+191.943  000.819  000.819: require('codecompanion.integrations.herdr')
+193.775  000.288  000.288: require('codecompanion.interactions.chat.helpers.filter')
+193.864  001.135  000.847: require('codecompanion.interactions.chat.slash_commands.filter')
+194.213  000.343  000.343: require('codecompanion.interactions.chat.tools.filter')
+194.596  000.371  000.371: require('codecompanion.utils.buffers')
+194.690  002.441  000.592: require('codecompanion.providers.completion')
+195.103  000.397  000.397: require('codecompanion.providers.completion.cmp.setup')
+196.133  000.381  000.381: require('codecompanion._extensions.history.log')
+196.884  000.739  000.739: require('codecompanion._extensions.history.pickers')
+197.323  000.427  000.427: require('codecompanion._extensions.history.utils')
+197.421  002.178  000.630: require('codecompanion._extensions.history')
+198.030  000.524  000.524: require('codecompanion._extensions.history.storage')
+199.032  000.465  000.465: require('plenary.bit')
+199.245  001.162  000.697: require('plenary.path')
+201.631  000.248  000.248: require('plenary.compat')
+201.676  000.595  000.348: require('plenary.job')
+201.718  001.096  000.501: require('plenary.curl')
+202.047  000.322  000.322: require('codecompanion.adapters')
+202.077  002.122  000.703: require('codecompanion.http')
+202.305  000.223  000.223: require('codecompanion.schema')
+202.316  002.654  000.309: require('codecompanion._extensions.history.title_generator')
+202.777  000.452  000.452: require('codecompanion._extensions.history.ui')
+203.257  000.247  000.247: require('codecompanion._extensions.history.vectorcode')
+204.029  000.170  000.170: sourcing /home/renzo/.local/share/nvim/lazy/conform.nvim/plugin/conform.lua
+204.042  000.268  000.097: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+204.060  000.007  000.007: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+204.089  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+205.086  000.861  000.861: require('conform')
+205.273  000.009  000.009: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+205.295  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+206.003  000.701  000.701: require('dap-python')
+206.841  000.301  000.301: require('dap.utils')
+206.980  000.971  000.670: require('dap')
+207.578  000.192  000.192: sourcing /home/renzo/.local/share/nvim/lazy/nvim-lspconfig/plugin/lspconfig.lua
+207.589  000.311  000.119: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+207.608  000.006  000.006: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+207.691  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+209.417  000.506  000.506: require('lspconfig.util')
+209.701  000.010  000.010: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+209.728  000.004  000.004: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+210.619  000.151  000.151: require('toggleterm.lazy')
+210.712  000.086  000.086: require('toggleterm.constants')
+211.137  000.418  000.418: require('toggleterm.terminal')
+211.166  001.401  000.745: require('toggleterm')
+211.609  000.193  000.193: require('toggleterm.colors')
+211.877  000.259  000.259: require('toggleterm.utils')
+211.918  000.746  000.294: require('toggleterm.config')
+219.171  000.664  000.664: require('toggleterm.commandline')
+220.116  000.309  000.309: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/editorconfig.lua
+220.129  000.391  000.081: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+220.532  000.324  000.324: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/gzip.vim
+220.541  000.378  000.054: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+220.985  000.388  000.388: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/man.lua
+220.995  000.439  000.051: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+222.188  000.331  000.331: sourcing /home/renzo/.local/nvim/share/nvim/runtime/pack/dist/opt/matchit/plugin/matchit.vim
+222.233  001.153  000.822: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/matchit.vim
+222.239  001.201  000.047: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+222.531  000.212  000.212: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/matchparen.vim
+222.538  000.260  000.048: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+223.075  000.486  000.486: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/net.lua
+223.085  000.535  000.049: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+224.473  000.428  000.428: sourcing /home/renzo/.local/nvim/share/nvim/runtime/pack/dist/opt/netrw/plugin/netrwPlugin.vim
+224.518  001.359  000.932: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/netrwPlugin.vim
+224.525  001.411  000.052: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+224.981  000.366  000.366: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/osc52.lua
+224.993  000.431  000.065: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+225.364  000.279  000.279: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/rplugin.vim
+225.374  000.346  000.068: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+225.960  000.496  000.496: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/shada.lua
+225.972  000.561  000.065: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+226.326  000.269  000.269: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/spellfile.lua
+226.337  000.340  000.070: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+226.630  000.206  000.206: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/tarPlugin.vim
+226.639  000.268  000.063: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+226.747  000.043  000.043: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/tutor.vim
+226.755  000.104  000.061: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+227.108  000.274  000.274: sourcing /home/renzo/.local/nvim/share/nvim/runtime/plugin/zipPlugin.vim
+227.122  000.338  000.065: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+229.990  001.533  001.533: require('cmp_path')
+230.212  001.992  000.459: sourcing /home/renzo/.local/share/nvim/lazy/cmp-path/after/plugin/cmp_path.lua
+230.234  002.125  000.133: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+231.969  000.396  000.396: require('cmp_buffer.timer')
+232.000  000.832  000.436: require('cmp_buffer.buffer')
+232.023  001.155  000.323: require('cmp_buffer.source')
+232.031  001.371  000.216: require('cmp_buffer')
+232.288  001.816  000.444: sourcing /home/renzo/.local/share/nvim/lazy/cmp-buffer/after/plugin/cmp_buffer.lua
+232.313  001.949  000.134: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+233.432  000.593  000.593: require('cmp_luasnip')
+233.572  000.990  000.397: sourcing /home/renzo/.local/share/nvim/lazy/cmp_luasnip/after/plugin/cmp_luasnip.lua
+233.588  001.129  000.139: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+233.797  000.078  000.078: sourcing /home/renzo/.local/share/nvim/lazy/cmp-nvim-lsp/after/plugin/cmp_nvim_lsp.lua
+233.806  000.152  000.073: sourcing nvim_exec2() called at /home/renzo/.config/nvim/init.lua:0
+233.911  219.605  064.307: sourcing /home/renzo/.config/nvim/init.lua
+233.936  002.976: sourcing vimrc file(s)
+234.409  000.069  000.069: sourcing /home/renzo/.local/nvim/share/nvim/runtime/filetype.lua
+234.566  000.561: inits 3
+237.943  003.378: reading ShaDa
+238.432  000.094  000.094: require('luasnip.util.directed_graph')
+238.508  000.071  000.071: require('luasnip.session.enqueueable_operations')
+238.520  000.354  000.189: require('luasnip.loaders.from_lua')
+239.145  000.063  000.063: require('luasnip.util.events')
+239.210  000.060  000.060: require('luasnip.nodes.optional_arg')
+239.230  000.265  000.142: require('luasnip.nodes.node')
+239.535  000.303  000.303: require('luasnip.nodes.insertNode')
+239.637  000.096  000.096: require('luasnip.nodes.textNode')
+239.727  000.085  000.085: require('luasnip.util.mark')
+239.803  000.071  000.071: require('luasnip.util.pattern_tokenizer')
+239.868  000.061  000.061: require('luasnip.util.dict')
+240.557  000.615  000.615: require('luasnip.util.jsregexp')
+240.565  000.692  000.077: require('luasnip.nodes.util.trig_engines')
+240.608  001.843  000.270: require('luasnip.nodes.snippet')
+240.614  001.916  000.073: require('luasnip.nodes.duplicate')
+240.618  001.985  000.069: require('luasnip.loaders.snippet_cache')
+240.630  002.102  000.117: require('luasnip.loaders.from_snipmate')
+241.090  000.079  000.079: require('luasnip.util.parser.neovim_ast')
+241.456  000.359  000.359: require('luasnip.util.jsregexp')
+241.467  000.536  000.099: require('luasnip.util.parser.ast_utils')
+241.575  000.105  000.105: require('luasnip.nodes.functionNode')
+241.709  000.130  000.130: require('luasnip.nodes.choiceNode')
+241.839  000.125  000.125: require('luasnip.nodes.dynamicNode')
+241.912  000.069  000.069: require('luasnip.util.functions')
+241.922  001.073  000.107: require('luasnip.util.parser.ast_parser')
+242.084  000.160  000.160: require('luasnip.util.parser.neovim_parser')
+242.101  001.331  000.099: require('luasnip.util.parser')
+242.180  000.076  000.076: require('luasnip.nodes.snippetProxy')
+242.389  000.203  000.203: require('luasnip.util.jsonc')
+242.405  001.769  000.159: require('luasnip.loaders.from_vscode')
+242.472  000.305: opening buffers
+242.634  000.162: BufEnter autocommands
+242.638  000.004: editing files in windows
+243.083  000.149  000.149: require('dap.ui')
+243.113  000.416  000.267: require('dap.repl')
+243.125  000.070: --- NVIM STARTED ---
+

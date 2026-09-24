@@ -1,4 +1,4 @@
-l:lua print(vim.inspect(require("nvim-treesitter").get_install_dir()))ocal opt = vim.opt
+local opt = vim.opt
 local api = vim.api
 
 -- history and memory tweaks

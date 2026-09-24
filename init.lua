@@ -15,31 +15,35 @@ require("core.keymaps")
 -- 4. Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		lazypath,
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 
 -- 5. Load plugins
 require("lazy").setup({
-  { import = "plugins" }
+	spec = {
+		{ import = "plugins" },
+	},
+	rocks = {
+		hererocks = true,
+	},
 })
-
 
 -- 4️⃣ Neovide-specific settings
 if vim.g.neovide then
-    -- Font settings
-    vim.opt.guifont = "JetBrainsMono Nerd Font:h8"  -- adjust size here
+	-- Font settings
+	vim.opt.guifont = "JetBrainsMono Nerd Font:h8" -- adjust size here
 
-    -- Optional performance tweaks
-    vim.g.neovide_refresh_rate = 60
-    vim.g.neovide_cursor_vfx_mode = "railgun"
-    vim.g.neovide_scroll_animation_length = 0
+	-- Optional performance tweaks
+	vim.g.neovide_refresh_rate = 60
+	vim.g.neovide_cursor_vfx_mode = "railgun"
+	vim.g.neovide_scroll_animation_length = 0
 end
 
 -- Terminal background sync snippet
