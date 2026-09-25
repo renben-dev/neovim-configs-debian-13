@@ -22,9 +22,8 @@ opt.relativenumber = true
 opt.scrolloff = 8
 
 -- Keymaps to save buffer with Ctrl+S
-api.nvim_set_keymap("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
-api.nvim_set_keymap("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true, silent = true })
-api.nvim_set_keymap("v", "<C-s>", ":w<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>a", { silent = true, desc = "Save buffer without leaving insert mode" })
+vim.keymap.set({ "n", "v" }, "<C-s>", ":w<CR>", { silent = true ,desc="Save buffer"})
 
 vim.diagnostic.config({
 	virtual_text = true,
@@ -33,15 +32,13 @@ vim.diagnostic.config({
 })
 
 -- Enable folding using Treesitter
--- vim.o.foldmethod = "expr"
--- vim.o.foldexpr = "nvim_treesitter#foldexpr()"
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.o.foldlevel = 99 -- start with all folds open
-vim.o.foldenable = true
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevel = 99 -- start with all folds open
+opt.foldenable = true
 
 -- make all yank/delete/put operations go through the + (system) register automatically
-vim.opt.clipboard = "unnamedplus"
+opt.clipboard = "unnamedplus"
 
 -- disable all highlight for json like files, renben: I encountered 60 sec open time on 8Mb json files
 vim.cmd("syntax off")
