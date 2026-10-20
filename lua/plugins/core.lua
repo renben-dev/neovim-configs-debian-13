@@ -18,17 +18,46 @@ return {
 				"c",
 				"cpp",
 				"bash",
-				"json",
 				"markdown",
 				"yaml",
+				"json",
+				"css",
 			})
+			-- vim.api.nvim_create_autocmd("FileType", {
+			-- 	callback = function(args)
+			-- 		local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+			--
+			-- 		if lang and vim.treesitter.language.add(lang) then
+			-- 			vim.treesitter.start(args.buf, lang)
+			-- 		end
+			-- 	end,
+			-- })
 			vim.api.nvim_create_autocmd("FileType", {
+				pattern = {
+					"json",
+					"jsonc",
+					"css",
+					"scss",
+					"typescript",
+					"javascript",
+					"typescriptreact",
+					"javascriptreact",
+					"python",
+					"lua",
+					"rust",
+					"c",
+					"cpp",
+					"bash",
+					"markdown",
+					"yaml",
+				},
 				callback = function(args)
-					local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
-
-					if lang and vim.treesitter.language.add(lang) then
-						vim.treesitter.start(args.buf, lang)
+					-- Skip treesitter if the file has more than 2000 lines (prevents freezing on huge JSON/logs)
+					if vim.api.nvim_buf_line_count(args.buf) > 2000 then
+						return
 					end
+
+					pcall(vim.treesitter.start, args.buf)
 				end,
 			})
 		end,
@@ -79,6 +108,8 @@ return {
 				"clangd",
 				"lua_ls",
 				"rust_analyzer",
+				"jsonls",
+				"cssls",
 			},
 
 			-- Rust is configured explicitly in rust.lua.
@@ -99,13 +130,13 @@ return {
 				capabilities = capabilities,
 			})
 
-			vim.lsp.config("vtsls", {
-				capabilities = capabilities,
-			})
-
-			vim.lsp.config("eslint", {
-				capabilities = capabilities,
-			})
+			-- vim.lsp.config("vtsls", {
+			-- 	capabilities = capabilities,
+			-- })
+			--
+			-- vim.lsp.config("eslint", {
+			-- 	capabilities = capabilities,
+			-- })
 
 			vim.lsp.config("clangd", {
 				capabilities = capabilities,
@@ -229,6 +260,8 @@ return {
 				typescript = { "prettier" },
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
+				json = { "prettier" },
+				css = { "prettier" },
 
 				python = { "black" },
 
@@ -236,32 +269,6 @@ return {
 				cpp = { "clang_format" },
 			},
 		},
-	},
-	-- Rainbow parentheses/brackets/braces highlighting
-	{
-		"HiPhish/rainbow-delimiters.nvim",
-		event = "BufReadPost", -- load after opening a buffer
-		config = function()
-			local rainbow_delimiters = require("rainbow-delimiters")
-
-			vim.g.rainbow_delimiters = {
-				strategy = {
-					[""] = rainbow_delimiters.strategy["global"], -- fallback strategy
-				},
-				query = {
-					[""] = "rainbow-delimiters", -- default query for all filetypes
-				},
-				highlight = {
-					"RainbowDelimiterRed",
-					"RainbowDelimiterYellow",
-					"RainbowDelimiterBlue",
-					"RainbowDelimiterOrange",
-					"RainbowDelimiterGreen",
-					"RainbowDelimiterViolet",
-					"RainbowDelimiterCyan",
-				},
-			}
-		end,
 	},
 	-- Rainbow parentheses/brackets/braces highlighting
 	{
