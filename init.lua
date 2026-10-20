@@ -31,7 +31,6 @@ require("lazy").setup({
 
 -- 2. Load Editor Settings
 require("core.settings")
-require("core.fttabs")
 
 -- 3 . Load custom defined keybingings
 require("core.keymaps")
